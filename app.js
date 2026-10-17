@@ -2,6 +2,8 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
+const dotenv = require('dotenv');
+dotenv.config();
 
 const app = express();
 
@@ -41,6 +43,10 @@ app.get("/thanks", (req, res) => {
 
 app.get("/already-completed", (req, res) => {
     res.render("alreadyCompleted");
+})
+
+app.get("/privacy-policy", (req, res) => {
+    res.render("privacyPolicy");
 })
 
 app.get("/admin/login", (req, res) => {

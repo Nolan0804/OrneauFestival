@@ -397,6 +397,23 @@
     margin-top: 0;
 }
 
+.consent a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.consent a:hover {
+    color: var(--accent-dark);
+    text-decoration: none;
+}
+
+.consent a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+}
+
 .submit-button {
     display: flex;
     width: 100%;
