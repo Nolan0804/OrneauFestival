@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Un festival près de chez vous ?</title>
+    <meta name="description" content="Questionnaire d'un potentiel festival à Gembloux">
+
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body>
+<main class="page">
+    <div class="page__container">
+    <header class="hero">
+        <img class="hero__logo" src="/images/Armoiries_Gembloux.png" alt="Logo 3 clés gembloux">
+        <h1>Un festival à Gembloux ?<span>On a besoin de votre avis.</span></h1>
+        <p>
+            Aidez-nous à imaginer un événement qui vous ressemble
+            en répondant à quelques questions.
+        </p>
+    </header>
+
+    <section class="survey" aria-labelledby="survey-title">
+        <div class="survey__header">
+            <div>
+                <h2 id="survey-title">Quelques questions rapides</h2>
+                <p>Les champs marqués d'un * sont obligatoires.</p>
+            </div>
+        </div>
+
+        <form action="/formulaire" method="POST" class="survey__form">
+            <div class="question">
+                <label for="age">
+                    <span class="question__number">1.</span>
+                    Quel âge avez-vous ?
+                    <span class="required">*</span>
+                </label>
+
+                <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        min="0"
+                        max="100"
+                        step="1"
+                        placeholder="Votre âge"
+                        required
+                >
+            </div>
+
+            <!-- QUESTION 2 : MOYEN DE LOCOMOTION -->
+            <div class="question">
+                <label for="transport">
+                    <span class="question__number">2.</span>
+                    Quel est votre moyen de locomotion préféré ?
+                    <span class="required">*</span>
+                </label>
+
+                <select id="transport" name="transport" required>
+                    <option value="" disabled selected>
+                        Sélectionnez un moyen de locomotion
+                    </option>
+                    <option value="bus">Bus</option>
+                    <option value="train">Train</option>
+                    <option value="voiture">Voiture</option>
+                    <option value="velo">Vélo</option>
+                    <option value="navette">Navette</option>
+                </select>
+            </div>
+
+            <div class="question">
+                <label for="budget">
+                    <span class="question__number">2.</span>
+                    Quel prix maximum paieriez-vous pour une journée ?
+                    <span class="required">*</span>
+                </label>
+
+                <div class="input-suffix">
+                    <input
+                            type="number"
+                            id="budget"
+                            name="budget"
+                            min="0"
+                            max="10000"
+                            step="1"
+                            placeholder="Ex. : 45"
+                            required
+                    >
+                    <span>€</span>
+                </div>
+
+                <small>Indiquez un montant entier, sans centimes.</small>
+            </div>
+
+            <!-- QUESTION 3 -->
+            <fieldset class="question">
+                <legend>
+                    <span class="question__number">3.</span>
+                    Seriez-vous intéressé(e) par un festival à Gembloux ?
+                    <span class="required">*</span>
+                </legend>
+
+                <div class="choices">
+                    <label class="choice">
+                        <input
+                                type="radio"
+                                name="festivalInterest"
+                                value="yes"
+                                required
+                        >
+                        <span class="choice__card">
+                                <span class="choice__icon">✓</span>
+                                <strong>Oui, je suis intéressé(e) !</strong>
+                                <small>Je serais au rendez-vous.</small>
+                            </span>
+                    </label>
+
+                    <label class="choice">
+                        <input
+                                type="radio"
+                                name="festivalInterest"
+                                value="maybe"
+                        >
+                        <span class="choice__card">
+                                <span class="choice__icon">?</span>
+                                <strong>Pourquoi pas</strong>
+                                <small>Tout dépend du programme.</small>
+                            </span>
+                    </label>
+
+                    <label class="choice">
+                        <input type="radio" name="festivalInterest" value="no">
+                        <span class="choice__card">
+                                <span class="choice__icon">—</span>
+                                <strong>Non, pas vraiment</strong>
+                                <small>Ce n'est pas pour moi.</small>
+                            </span>
+                    </label>
+                </div>
+            </fieldset>
+
+            <!-- QUESTION 4 -->
+            <div class="question">
+                <label for="artist">
+                    <span class="question__number">4.</span>
+                    Quel(s) artiste(s) ou DJ(s) aimeriez-vous voir ?
+                    <span class="required">*</span>
+                </label>
+
+                <input
+                        type="text"
+                        id="artist"
+                        name="artist"
+                        maxlength="100"
+                        placeholder="DJ, rappeur, groupe..."
+                        required
+                >
+
+                <small>Vous pouvez mentionner plusieurs artistes.</small>
+            </div>
+
+            <!-- QUESTION 5 -->
+            <div class="question">
+                <label for="email">
+                    <span class="question__number">5.</span>
+                    Votre adresse e-mail
+                    <span class="optional">Facultatif</span>
+                </label>
+
+                <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        maxlength="254"
+                        autocomplete="email"
+                        placeholder="vous@exemple.be"
+                >
+
+                <small>Pour recevoir des nouvelles du projet.</small>
+            </div>
+
+            <!-- QUESTION 6 -->
+            <fieldset class="question consent">
+                <legend>
+                    <span class="question__number">6.</span>
+                    Souhaitez-vous recevoir nos actualités ?
+                </legend>
+
+                <p>
+                    Acceptez-vous que votre adresse e-mail soit utilisée
+                    pour recevoir des actualités et offres commerciales
+                    concernant le festival ?
+                </p>
+
+                <label class="consent__label">
+                    <input type="checkbox" name="marketingConsent" value="1">
+                    <span>
+                            Oui, j'accepte de recevoir ces communications.
+                            Je pourrai retirer mon consentement à tout moment.
+                    </span>
+                </label>
+
+                <small>
+                    Ce choix est facultatif et n'empêche pas de participer.
+                </small>
+            </fieldset>
+
+            <button type="submit" class="submit-button">
+                Envoyer mes réponses
+                <span aria-hidden="true">→</span>
+            </button>
+
+            <p class="survey__footer">
+                Merci de contribuer à un projet local !
+            </p>
+
+        </form>
+    </section>
+
+    <footer class="page__footer">
+        Un projet qui veut redynamiser gembloux.
+    </footer>
+    </div>
+</main>
+</body>
+</html>

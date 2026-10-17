@@ -1,0 +1,967 @@
+.dashboard {
+    min-height: 100vh;
+    padding: 42px 24px 28px;
+
+    background:
+        radial-gradient(
+            ellipse at 12% 0%,
+            #dce9ff 0%,
+            transparent 42%
+        ),
+        linear-gradient(
+            145deg,
+            #f4f7ff 0%,
+            #edf3ff 55%,
+            #e6efff 100%
+        );
+
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    color: var(--accent-dark);
+}
+
+.dashboard *,
+.dashboard *::before,
+.dashboard *::after {
+    box-sizing: border-box;
+}
+
+.dashboard__container {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+}
+
+/* ===== EN-TÊTE ===== */
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 42px;
+}
+
+.dashboard-header__brand {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.dashboard-header__logo {
+    width: 55px;
+    height: 65px;
+    object-fit: contain;
+}
+
+.dashboard-header__eyebrow,
+.section-heading__eyebrow {
+    margin: 0 0 8px;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.dashboard-header h1 {
+    margin: 0 0 8px;
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 800;
+    letter-spacing: -1.2px;
+}
+
+.dashboard-header__description,
+.section-heading__description {
+    margin: 0;
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* ===== BOUTON ===== */
+
+.refresh-button,
+.toggle-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 43px;
+    padding: 10px 15px;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--accent-dark);
+
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 160ms ease, background 160ms ease;
+}
+
+.refresh-button:hover,
+.toggle-button:hover {
+    border-color: var(--accent);
+    background: #f5f8ff;
+}
+
+.refresh-button span {
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* ===== SECTIONS ===== */
+
+.dashboard-section {
+    margin-bottom: 36px;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 19px;
+}
+
+.section-heading h2 {
+    margin: 0 0 7px;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.section-heading__tag {
+    flex-shrink: 0;
+    padding: 8px 11px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: rgb(255 255 255 / 65%);
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.stats-grid--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stat-card {
+    display: grid;
+    gap: 5px;
+    padding: 20px;
+
+    border: 1px solid #dce5f2;
+    border-radius: 14px;
+
+    background: #ffffff;
+}
+
+.metric-card {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    padding: 24px;
+    border: 1px solid #dce5f2;
+    border-radius: 13px;
+    background: #f9fbff;
+}
+
+.metric-card-item {
+    min-width: 0;
+    padding: 0;
+}
+
+
+.stat-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.stat-card__label,
+.metric-card__label {
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.stat-card__icon {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #f6f8fd;
+    color: var(--accent);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.stat-card__value {
+    margin: 19px 0 5px;
+    color: var(--accent-dark);
+    font-size: clamp(32px, 4vw, 43px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -1.5px;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-card__description,
+.metric-card__hint {
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.stat-card--yes {
+    border-top: 3px solid #27814d;
+}
+
+.stat-card--maybe {
+    border-top: 3px solid #d39a2c;
+}
+
+.stat-card--no {
+    border-top: 3px solid #d45c67;
+}
+
+/* ===== INDICATEURS MOYENS ===== */
+
+.metric-card {
+    padding: 25px;
+}
+
+.metric-card__icon {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    margin-bottom: 17px;
+
+    border: 1px solid #d7e4fa;
+    border-radius: 10px;
+    background: #f0f5ff;
+    color: var(--accent);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.metric-card__label {
+    display: block;
+    margin-bottom: 12px;
+}
+
+.metric-card__value {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    margin: 0;
+
+    color: var(--accent-dark);
+    font-size: clamp(29px, 4vw, 38px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+}
+
+.metric-card__unit {
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+/* ===== ARTISTES ===== */
+
+.artists-section {
+    padding: 25px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: var(--surface);
+}
+
+.artists-section .section-heading {
+    margin-bottom: 0;
+}
+
+.artists-section .section-heading h2 {
+    margin-bottom: 7px;
+}
+
+.toggle-button {
+    flex-shrink: 0;
+}
+
+.toggle-button span {
+    font-size: 17px;
+    transition: transform 160ms ease;
+}
+
+.toggle-button[aria-expanded="true"] span {
+    transform: rotate(180deg);
+}
+
+.artists-content {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.artists-content[hidden] {
+    display: none;
+}
+
+.artists-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.artists-toolbar > p {
+    margin: 0;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.artists-search input {
+    width: 210px;
+    max-width: 100%;
+    min-height: 39px;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    background: #fbfcff;
+    color: var(--accent-dark);
+    font: inherit;
+    font-size: 12px;
+}
+
+.artists-search input:focus-visible {
+    border-color: var(--accent);
+    outline: 3px solid #dce8ff;
+    outline-offset: 2px;
+}
+
+.artists-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.artist-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 15px;
+    border: 1px solid #e7edf7;
+    border-radius: 9px;
+    background: #fbfcff;
+}
+
+.artist-row__name {
+    overflow-wrap: anywhere;
+    color: var(--accent-dark);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.artist-row__count {
+    flex-shrink: 0;
+    padding: 6px 9px;
+    border-radius: 6px;
+    background: #eaf1ff;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.empty-state {
+    margin: 0;
+    padding: 20px;
+    border: 1px dashed var(--border);
+    border-radius: 9px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+/* ===== STATUT ET FOOTER ===== */
+
+.dashboard-status {
+    min-height: 20px;
+    margin: 20px 0;
+    color: var(--text);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.dashboard-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding-top: 20px;
+    border-top: 1px solid #d5e0f0;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+/* Accessibilité : texte masqué visuellement */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+button:focus-visible {
+    outline: 3px solid #c6d9ff;
+    outline-offset: 3px;
+}
+
+.mobility-panel {
+    padding: 8px 20px;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    background: rgb(255 255 255 / 0.66);
+}
+
+.mobility-row {
+    display: grid;
+    grid-template-columns: 125px minmax(50px, 1fr) 72px;
+    align-items: center;
+    gap: 22px;
+
+    min-height: 66px;
+    padding: 12px 0;
+
+    border-bottom: 1px solid #e8eef7;
+}
+
+.mobility-row:last-child {
+    border-bottom: none;
+}
+
+/* Nom du transport */
+
+.mobility-transport {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    min-width: 0;
+
+    color: var(--accent-dark);
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.mobility-icon {
+    display: grid;
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+    place-items: center;
+
+    border: 1px solid #e3ebf8;
+    border-radius: 10px;
+
+    background: #f1f5ff;
+
+    font-size: 16px;
+}
+
+/* Barre de progression */
+
+.mobility-progress {
+    min-width: 0;
+}
+
+.mobility-progress__track {
+    width: 97%;
+    height: 7px;
+    overflow: hidden;
+
+    border-radius: 20px;
+    background: #eaf0f9;
+}
+
+.mobility-progress__track span {
+    display: block;
+    width: 0;
+    height: 100%;
+
+    border-radius: inherit;
+    background: linear-gradient(
+        90deg,
+        var(--accent),
+        #6a9cff
+    );
+
+    transition: width 300ms ease;
+}
+
+/* Nombre de répondants */
+
+.mobility-stats {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 5px;
+
+    white-space: nowrap;
+}
+
+.mobility-stats strong {
+    color: var(--accent-dark);
+    font-size: 17px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.mobility-stats span {
+    color: var(--text);
+    font-size: 10px;
+}
+
+/* Texte sous la liste */
+
+.mobility-footer {
+    margin: 12px 2px 0;
+
+    color: var(--text);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* ========================================
+   TABLETTES
+   ======================================== */
+
+@media (max-width: 768px) {
+    .dashboard {
+        padding: 30px 18px 24px;
+    }
+
+    .dashboard-header {
+        gap: 18px;
+        margin-bottom: 32px;
+    }
+
+    .dashboard-header__brand {
+        gap: 13px;
+    }
+
+    .dashboard-header__logo {
+        width: 45px;
+        height: 52px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 30px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 13px;
+    }
+
+    .stats-grid--two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .metric-card {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        padding: 20px;
+    }
+
+    .stat-card {
+        padding: 17px;
+    }
+
+    .metric-card__value {
+        font-size: 30px;
+    }
+
+    .mobility-panel {
+        padding: 6px 16px;
+    }
+
+    .mobility-row {
+        grid-template-columns: 110px minmax(40px, 1fr) 65px;
+        gap: 14px;
+        min-height: 62px;
+    }
+
+    .mobility-transport {
+        gap: 8px;
+        font-size: 12px;
+    }
+
+    .mobility-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    .artists-section {
+        padding: 20px;
+    }
+}
+
+/* ========================================
+   SMARTPHONES
+   ======================================== */
+
+@media (max-width: 600px) {
+    .dashboard {
+        padding: 24px 14px 20px;
+    }
+
+    /* En-tête */
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .dashboard-header__brand {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .dashboard-header__logo {
+        width: 40px;
+        height: 48px;
+    }
+
+    .dashboard-header__eyebrow {
+        font-size: 10px;
+        letter-spacing: 1px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 27px;
+        letter-spacing: -0.8px;
+    }
+
+    .dashboard-header__description {
+        font-size: 12px;
+    }
+
+    .refresh-button {
+        width: 100%;
+        min-height: 46px;
+    }
+
+    /* Sections */
+
+    .dashboard-section {
+        margin-bottom: 28px;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .section-heading h2 {
+        font-size: 19px;
+    }
+
+    .section-heading__description {
+        font-size: 12px;
+    }
+
+    .section-heading__tag {
+        padding: 7px 8px;
+        font-size: 10px;
+    }
+
+    /* Cartes statistiques */
+
+    .stats-grid,
+    .stats-grid--two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .stat-card {
+        gap: 7px;
+        padding: 15px 13px;
+        border-radius: 11px;
+    }
+
+    .stat-card__top {
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .stat-card__label {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .stat-card__icon {
+        width: 29px;
+        height: 29px;
+        flex-shrink: 0;
+    }
+
+    .stat-card__value {
+        margin: 12px 0 3px;
+        font-size: clamp(25px, 7vw, 33px);
+        letter-spacing: -1px;
+        overflow-wrap: anywhere;
+    }
+
+    .stat-card__description {
+        margin-top: 5px;
+        font-size: 10px;
+    }
+
+    /* Métriques */
+
+    .metric-card {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    .metric-card-item {
+        padding: 17px 0;
+    }
+
+    .metric-card-item + .metric-card-item {
+        border-top: 1px solid #e3eaf5;
+    }
+
+    .metric-card__icon {
+        width: 34px;
+        height: 34px;
+        margin-bottom: 12px;
+    }
+
+    .metric-card__label {
+        margin-bottom: 8px;
+        font-size: 12px;
+    }
+
+    .metric-card__value {
+        font-size: 30px;
+    }
+
+    .metric-card__hint {
+        margin-top: 7px;
+        font-size: 10px;
+    }
+    .mobility-panel {
+        padding: 4px 13px;
+        border-radius: 12px;
+    }
+
+    .mobility-row {
+        grid-template-columns: 96px minmax(35px, 1fr) 59px;
+        gap: 10px;
+        min-height: 57px;
+        padding: 10px 0;
+    }
+
+    .mobility-transport {
+        gap: 7px;
+        font-size: 11px;
+    }
+
+    .mobility-icon {
+        width: 29px;
+        height: 29px;
+        border-radius: 8px;
+        font-size: 13px;
+    }
+
+    .mobility-progress__track {
+        height: 6px;
+    }
+
+    .mobility-stats {
+        gap: 3px;
+    }
+
+    .mobility-stats strong {
+        font-size: 14px;
+    }
+
+    .mobility-stats span {
+        font-size: 9px;
+    }
+
+    .mobility-footer {
+        font-size: 10px;
+    }
+
+    /* Artistes */
+
+    .artists-section {
+        padding: 17px 13px;
+        border-radius: 11px;
+    }
+
+    .artists-section .section-heading {
+        align-items: center;
+        gap: 10px;
+    }
+
+    .artists-section .section-heading h2 {
+        font-size: 18px;
+    }
+
+    .toggle-button {
+        min-height: 39px;
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .artists-content {
+        margin-top: 18px;
+        padding-top: 16px;
+    }
+
+    .artists-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .artists-search input {
+        width: 100%;
+        min-height: 43px;
+        font-size: 14px;
+    }
+
+    .artist-row {
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .artist-row__name {
+        font-size: 12px;
+    }
+
+    .artist-row__count {
+        font-size: 10px;
+    }
+
+    /* Statut et pied de page */
+
+    .dashboard-status {
+        margin: 16px 0;
+        font-size: 11px;
+    }
+
+    .dashboard-footer {
+        flex-direction: column;
+        gap: 5px;
+        padding-top: 16px;
+        font-size: 10px;
+    }
+}
+
+/* ========================================
+   PETITS SMARTPHONES
+   ======================================== */
+
+@media (max-width: 360px) {
+    .dashboard {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .stats-grid,
+    .stats-grid--two {
+        gap: 8px;
+    }
+
+    .stat-card {
+        padding: 12px 10px;
+    }
+
+    .stat-card__value {
+        font-size: 25px;
+    }
+
+    .section-heading__tag {
+        white-space: normal;
+        text-align: center;
+    }
+
+    .mobility-panel {
+        padding-right: 9px;
+        padding-left: 9px;
+    }
+
+    .mobility-row {
+        grid-template-columns: 83px minmax(25px, 1fr) 53px;
+        gap: 7px;
+    }
+
+    .mobility-transport {
+        gap: 5px;
+        font-size: 10px;
+    }
+
+    .mobility-icon {
+        width: 26px;
+        height: 26px;
+        font-size: 12px;
+    }
+
+    .mobility-stats strong {
+        font-size: 13px;
+    }
+
+    .artists-section {
+        padding: 14px 10px;
+    }
+}
+/* ===== ACCESSIBILITÉ ===== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+}

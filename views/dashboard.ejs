@@ -1,0 +1,321 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Festival</title>
+    <meta name="description" content="Tableau de bord des résultats du sondage du festival de Gembloux.">
+
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <script src="/js/dashboard.js" defer></script>
+</head>
+
+<body>
+<main class="dashboard">
+    <div class="dashboard__container">
+
+        <header class="dashboard-header">
+            <div class="dashboard-header__brand">
+                <img
+                    src="/images/Armoiries_Gembloux.png"
+                    alt="Armoiries de Gembloux"
+                    class="dashboard-header__logo"
+                >
+
+                <div>
+                    <p class="dashboard-header__eyebrow">Festival</p>
+                    <h1>Tableau de bord</h1>
+                    <p class="dashboard-header__description">
+                        Résultats du questionnaire et attentes du public.
+                    </p>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="refresh-button"
+                id="refresh-button"
+            >
+                <span aria-hidden="true">↻</span>
+                Actualiser
+            </button>
+        </header>
+
+        <section class="dashboard-section" aria-labelledby="interest-title">
+            <div class="section-heading">
+                <div>
+                    <p class="section-heading__eyebrow">01 — Participation</p>
+                    <h2 id="interest-title">Intérêt pour le festival</h2>
+                </div>
+
+                <span class="section-heading__tag" id="response-count">
+                    Chargement...
+                </span>
+            </div>
+
+            <div class="stats-grid">
+                <article class="stat-card stat-card--yes">
+                    <div class="stat-card__top">
+                        <span class="stat-card__label">Intéressés</span>
+                        <span class="stat-card__icon" aria-hidden="true">↗</span>
+                    </div>
+                    <p class="stat-card__value" id="yes-count">—</p>
+                    <p class="stat-card__description">Réponses positives</p>
+                </article>
+
+                <article class="stat-card stat-card--maybe">
+                    <div class="stat-card__top">
+                        <span class="stat-card__label">À convaincre</span>
+                        <span class="stat-card__icon" aria-hidden="true">?</span>
+                    </div>
+                    <p class="stat-card__value" id="maybe-count">—</p>
+                    <p class="stat-card__description">Réponses incertaines</p>
+                </article>
+
+                <article class="stat-card stat-card--no">
+                    <div class="stat-card__top">
+                        <span class="stat-card__label">Non intéressés</span>
+                        <span class="stat-card__icon" aria-hidden="true">—</span>
+                    </div>
+                    <p class="stat-card__value" id="no-count">—</p>
+                    <p class="stat-card__description">Réponses négatives</p>
+                </article>
+            </div>
+        </section>
+
+
+        <section class="dashboard-section" aria-labelledby="mobility-title">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-heading__eyebrow">02 — Déplacements</p>
+                    <h2 id="mobility-title">Mobilité des participants</h2>
+                    <p class="section-heading__description">
+                        Moyens de transport privilégiés pour rejoindre le festival.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mobility-panel">
+
+                <div class="mobility-row">
+                    <div class="mobility-transport">
+                        <span class="mobility-icon" aria-hidden="true">🚌</span>
+                        <span>Bus</span>
+                    </div>
+                    <div class="mobility-progress">
+                        <div class="mobility-progress__track">
+                            <span id="transport-bus-bar"></span>
+                        </div>
+                    </div>
+                    <div class="mobility-stats">
+                        <strong id="transport-bus">—</strong>
+                        <span>pers. /</span>
+                        <strong id="transport-bus-pourcentage">—</strong>
+                        <span>%</span>
+                    </div>
+                </div>
+
+                <div class="mobility-row">
+                    <div class="mobility-transport">
+                        <span class="mobility-icon" aria-hidden="true">🚆</span>
+                        <span>Train</span>
+                    </div>
+                    <div class="mobility-progress">
+                        <div class="mobility-progress__track">
+                            <span id="transport-train-bar"></span>
+                        </div>
+                    </div>
+                    <div class="mobility-stats">
+                        <strong id="transport-train">—</strong>
+                        <span>pers. /</span>
+                        <strong id="transport-train-pourcentage">—</strong>
+                        <span>%</span>
+                    </div>
+                </div>
+
+                <div class="mobility-row">
+                    <div class="mobility-transport">
+                        <span class="mobility-icon" aria-hidden="true">🚗</span>
+                        <span>Voiture</span>
+                    </div>
+                    <div class="mobility-progress">
+                        <div class="mobility-progress__track">
+                            <span id="transport-voiture-bar"></span>
+                        </div>
+                    </div>
+                    <div class="mobility-stats">
+                        <strong id="transport-voiture">—</strong>
+                        <span>pers. /</span>
+                        <strong id="transport-voiture-pourcentage">—</strong>
+                        <span>%</span>
+                    </div>
+                </div>
+
+                <div class="mobility-row">
+                    <div class="mobility-transport">
+                        <span class="mobility-icon" aria-hidden="true">🚲</span>
+                        <span>Vélo</span>
+                    </div>
+                    <div class="mobility-progress">
+                        <div class="mobility-progress__track">
+                            <span id="transport-velo-bar"></span>
+                        </div>
+                    </div>
+                    <div class="mobility-stats">
+                        <strong id="transport-velo">—</strong>
+                        <span>pers. /</span>
+                        <strong id="transport-velo-pourcentage">—</strong>
+                        <span>%</span>
+                    </div>
+                </div>
+
+                <div class="mobility-row">
+                    <div class="mobility-transport">
+                        <span class="mobility-icon" aria-hidden="true">🚐</span>
+                        <span>Navette</span>
+                    </div>
+                    <div class="mobility-progress">
+                        <div class="mobility-progress__track">
+                            <span id="transport-navette-bar"></span>
+                        </div>
+                    </div>
+                    <div class="mobility-stats">
+                        <strong id="transport-navette">—</strong>
+                        <span>pers. /</span>
+                        <strong id="transport-navette-pourcentage">—</strong>
+                        <span>%</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="dashboard-section" aria-labelledby="profile-title">
+            <div class="section-heading">
+                <div>
+                    <p class="section-heading__eyebrow">03 — Public</p>
+                    <h2 id="profile-title">Profil des répondants</h2>
+                </div>
+            </div>
+
+            <div class="stats-grid stats-grid--two">
+                <article class="metric-card">
+                    <div class="metric-card-item">
+                        <div class="metric-card__icon" aria-hidden="true">-</div>
+                        <p class="metric-card__label">Âge Min</p>
+                        <p class="metric-card__value">
+                            <span id="min-age">—</span>
+                            <span class="metric-card__unit">ans</span>
+                        </p>
+                        <p class="metric-card__hint">Tous les répondants</p>
+                    </div>
+                    <div class="metric-card-item">
+                        <div class="metric-card__icon" aria-hidden="true">↗</div>
+                        <p class="metric-card__label">Âge moyen</p>
+                        <p class="metric-card__value">
+                            <span id="average-age">—</span>
+                            <span class="metric-card__unit">ans</span>
+                        </p>
+                    </div>
+                    <div class="metric-card-item">
+                        <div class="metric-card__icon" aria-hidden="true">+</div>
+                        <p class="metric-card__label">Âge Max</p>
+                        <p class="metric-card__value">
+                            <span id="max-age">—</span>
+                            <span class="metric-card__unit">ans</span>
+                        </p>
+                    </div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-card-item">
+                        <div class="metric-card__icon" aria-hidden="true">-</div>
+                        <p class="metric-card__label">Budget Minimum</p>
+                        <p class="metric-card__value">
+                            <span id="min-budget">—</span>
+                            <span class="metric-card__unit">€</span>
+                        </p>
+                        <p class="metric-card__hint">Prix accepté pour une journée</p>
+                    </div>
+                    <div class="metric-card-item">
+                        <div class="metric-card__icon" aria-hidden="true">€</div>
+                        <p class="metric-card__label">Budget moyen</p>
+                        <p class="metric-card__value">
+                            <span id="average-budget">—</span>
+                            <span class="metric-card__unit">€</span>
+                        </p>
+                    </div>
+                    <div class="metric-card-item">
+                        <div class="metric-card__icon" aria-hidden="true">+</div>
+                        <p class="metric-card__label">Budget Maximal</p>
+                        <p class="metric-card__value">
+                            <span id="max-budget">—</span>
+                            <span class="metric-card__unit">€</span>
+                        </p>
+                    </div>
+
+                </article>
+            </div>
+        </section>
+
+        <section class="dashboard-section artists-section"
+                 aria-labelledby="artists-title">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-heading__eyebrow">03 — Programmation</p>
+                    <h2 id="artists-title">Artistes souhaités</h2>
+                    <p class="section-heading__description">
+                        Les noms les plus cités par les participants.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="toggle-button"
+                    id="toggle-artists"
+                    aria-expanded="false"
+                    aria-controls="artists-content"
+                >
+                    Voir la liste
+                    <span aria-hidden="true">⌄</span>
+                </button>
+            </div>
+
+            <div class="artists-content" id="artists-content" hidden>
+                <div class="artists-toolbar">
+                    <p id="artists-total">0 artiste cité</p>
+                    <label class="artists-search">
+                        <span class="visually-hidden">Rechercher un artiste</span>
+                        <input
+                            type="search"
+                            id="artist-search"
+                            placeholder="Rechercher..."
+                        >
+                    </label>
+                </div>
+
+                <div class="artists-list" id="artists-list">
+                    <p class="empty-state">Chargement des artistes...</p>
+                </div>
+            </div>
+        </section>
+
+        <p class="dashboard-status" id="dashboard-status" role="status">
+            Chargement des statistiques...
+        </p>
+
+        <footer class="dashboard-footer">
+            <span>Festival</span>
+            <span>Dashboard des résultats du sondage</span>
+        </footer>
+
+    </div>
+</main>
+</body>
+</html>

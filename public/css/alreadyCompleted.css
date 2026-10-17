@@ -1,0 +1,382 @@
+.page {
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            ellipse at 15% 0%,
+            #dce9ff 0%,
+            transparent 45%
+        ),
+        linear-gradient(
+            145deg,
+            #f4f7ff 0%,
+            #edf3ff 55%,
+            #e6efff 100%
+        );
+
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.page *,
+.page *::before,
+.page *::after {
+    box-sizing: border-box;
+}
+
+.page__container {
+    width: 100%;
+    max-width: 580px;
+    margin: 0 auto;
+}
+
+/* ========================================
+   IDENTITÉ VISUELLE
+======================================== */
+
+.brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    margin-bottom: 28px;
+}
+
+.brand__logo {
+    display: block;
+    width: 35px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.brand__name {
+    color: var(--accent-dark);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+
+/* ========================================
+   CARTE PRINCIPALE
+======================================== */
+
+.status-card {
+    width: 100%;
+    padding: 40px 36px;
+
+    border: 1px solid var(--border);
+    border-radius: 18px;
+
+    background: rgb(255 255 255 / 0.66);
+    text-align: center;
+}
+
+/* ========================================
+   ICÔNE DE CONFIRMATION
+======================================== */
+
+.status-card__icon {
+    display: grid;
+    width: 58px;
+    height: 58px;
+    place-items: center;
+    margin: 0 auto 25px;
+
+    border: 1px solid #dce5f2;
+    border-radius: 50%;
+
+    background: #eaf1ff;
+    color: var(--accent);
+}
+
+.status-card__icon svg {
+    display: block;
+    width: 28px;
+    height: 28px;
+    stroke: currentColor;
+}
+
+/* ========================================
+   TITRE INTRODUCTIF
+======================================== */
+
+.status-card__eyebrow {
+    margin: 0 0 12px;
+
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+}
+
+/* ========================================
+   TITRE PRINCIPAL
+======================================== */
+
+.status-card h1 {
+    max-width: 460px;
+    margin: 0 auto 16px;
+
+    color: var(--accent-dark);
+    font-size: clamp(29px, 4vw, 38px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.8px;
+}
+
+/* ========================================
+   DESCRIPTION
+======================================== */
+
+.status-card__description {
+    max-width: 430px;
+    margin: 0 auto 26px;
+
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* ========================================
+   INFORMATION IMPORTANTE
+======================================== */
+
+.notice {
+    padding: 18px 19px;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: #f7f9fd;
+    text-align: left;
+}
+
+.notice__label {
+    display: block;
+    margin-bottom: 7px;
+
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.notice p {
+    margin: 0;
+
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.75;
+}
+
+.notice strong {
+    color: var(--accent-dark);
+    font-weight: 700;
+}
+
+/* ========================================
+   CONCLUSION
+======================================== */
+
+.status-card__closing {
+    margin: 23px 0 0;
+
+    color: var(--accent-dark);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.7;
+}
+
+/* ========================================
+   PIED DE PAGE
+======================================== */
+
+.page__footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 22px 8px 0;
+
+    color: var(--text);
+    font-size: 11px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+.page__footer-dot {
+    color: var(--accent);
+}
+
+/* ========================================
+   TABLETTES
+======================================== */
+
+@media (max-width: 768px) {
+    .page {
+        padding: 28px 18px;
+    }
+
+    .page__container {
+        max-width: 620px;
+    }
+
+    .status-card {
+        padding: 34px 28px;
+    }
+}
+
+/* ========================================
+   SMARTPHONES
+======================================== */
+
+@media (max-width: 600px) {
+    .page {
+        padding: 24px 12px;
+    }
+
+    .page__container {
+        max-width: 100%;
+    }
+
+    .brand {
+        gap: 10px;
+        margin-bottom: 22px;
+    }
+
+    .brand__logo {
+        width: 32px;
+        height: 36px;
+    }
+
+    .brand__name {
+        font-size: 13px;
+    }
+
+    .status-card {
+        padding: 30px 20px;
+        border-radius: 15px;
+    }
+
+    .status-card__icon {
+        width: 53px;
+        height: 53px;
+        margin-bottom: 22px;
+    }
+
+    .status-card__icon svg {
+        width: 25px;
+        height: 25px;
+    }
+
+    .status-card__eyebrow {
+        margin-bottom: 10px;
+        font-size: 10px;
+        letter-spacing: 1.3px;
+    }
+
+    .status-card h1 {
+        margin-bottom: 14px;
+        font-size: clamp(27px, 7vw, 34px);
+        line-height: 1.25;
+        letter-spacing: -0.5px;
+    }
+
+    .status-card__description {
+        margin-bottom: 22px;
+        font-size: 13px;
+        line-height: 1.75;
+    }
+
+    .notice {
+        padding: 15px;
+        border-radius: 9px;
+    }
+
+    .notice__label {
+        font-size: 10px;
+    }
+
+    .notice p {
+        font-size: 12px;
+        line-height: 1.75;
+    }
+
+    .status-card__closing {
+        margin-top: 20px;
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+    .page__footer {
+        gap: 6px;
+        padding: 20px 8px 0;
+        font-size: 10px;
+    }
+}
+
+/* ========================================
+   PETITS SMARTPHONES
+======================================== */
+
+@media (max-width: 360px) {
+    .page {
+        padding: 20px 9px;
+    }
+
+    .brand {
+        margin-bottom: 18px;
+    }
+
+    .status-card {
+        padding: 25px 15px;
+        border-radius: 14px;
+    }
+
+    .status-card__icon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 19px;
+    }
+
+    .status-card h1 {
+        font-size: 26px;
+        letter-spacing: -0.4px;
+    }
+
+    .status-card__description {
+        font-size: 12px;
+    }
+
+    .notice {
+        padding: 13px;
+    }
+
+    .notice p {
+        font-size: 12px;
+    }
+
+    .status-card__closing {
+        font-size: 12px;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITÉ
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+}

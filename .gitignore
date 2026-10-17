@@ -1,0 +1,100 @@
+
+# ==============================
+# DEPENDANCES
+# ==============================
+node_modules/
+**/node_modules/
+
+# ==============================
+# VARIABLES D'ENVIRONNEMENT
+# ==============================
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# ==============================
+# BUILDS ET FICHIERS GENERES
+# ==============================
+dist/
+build/
+out/
+coverage/
+.next/
+.nuxt/
+.turbo/
+.cache/
+
+# ==============================
+# LOGS
+# ==============================
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# ==============================
+# REACT / VITE
+# ==============================
+.vite/
+
+# ==============================
+# MOBILE / REACT NATIVE / EXPO
+# ==============================
+.expo/
+.expo-shared/
+web-build/
+android/.gradle/
+android/app/build/
+ios/Pods/
+ios/build/
+
+# ==============================
+# IDE / EDITEURS
+# ==============================
+.idea/
+.vscode/
+*.iml
+*.suo
+*.user
+*.swp
+.DS_Store
+Thumbs.db
+
+# ==============================
+# TYPESCRIPT
+# ==============================
+*.tsbuildinfo
+
+# ==============================
+# TESTS
+# ==============================
+.nyc_output/
+
+# ==============================
+# FICHIERS DE CONFIGURATION LOCAUX
+# ==============================
+*.local
+
+# ==============================
+# CERTIFICATS ET CLES PRIVEES
+# ==============================
+*.pem
+*.key
+*.p12
+*.pfx
+
+# ==============================
+# DOCKER / DONNEES LOCALES
+# ==============================
+docker-data/
+postgres-data/
+mysql-data/
+*.dump
+*.bak
+
+# ==============================
+# FICHIERS TEMPORAIRES
+# ==============================
+tmp/
+temp/
