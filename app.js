@@ -45,7 +45,6 @@ const loginLimiter = rateLimit({
     }
 });
 
-
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -353,7 +352,6 @@ const sql = `
         });
     }
 });
-
 
 app.listen(5000, () => {
     console.log("http://localhost:5000");
