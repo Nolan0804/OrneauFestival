@@ -104,38 +104,15 @@ async function loadDashboard() {
         setText("transport-navette-pourcentage", data.transport.navette === null ? "—" : (formatNumber(data.transport.navette) / data.total * 100).toFixed(0));
         setText("transport-velo-pourcentage", data.transport.velo === null ? "—" : (formatNumber(data.transport.velo) / data.total * 100).toFixed(0));
 
-        setText(
-            "min-budget",
-            data.budget.minimum === null
-                ? "—"
-                : formatNumber(data.budget.minimum, 2)
-        );
-
-        setText(
-            "average-budget",
-            data.budget.average === null
-                ? "—"
-                : formatNumber(data.budget.average, 2)
-        );
-        setText(
-            "max-budget",
-            data.budget.maximum === null
-                ? "—"
-                : formatNumber(data.budget.maximum, 2)
-        );
+        setText("min-budget", data.budget.minimum === null ? "—" : formatNumber(data.budget.minimum, 2));
+        setText("average-budget",data.budget.average === null ? "—" : formatNumber(data.budget.average, 2));
+        setText("max-budget", data.budget.maximum === null ? "—" : formatNumber(data.budget.maximum, 2));
 
         artistsData = data.artists || [];
-        setText(
-            "artists-total",
-            `${artistsData.length} artiste${artistsData.length > 1 ? "s" : ""} distinct${artistsData.length > 1 ? "s" : ""}`
-        );
-
+        setText("artists-total",`${artistsData.length} artiste${artistsData.length > 1 ? "s" : ""} distinct${artistsData.length > 1 ? "s" : ""}`);
         renderArtists();
 
-        setText(
-            "dashboard-status",
-            `Données actualisées à ${new Date().toLocaleTimeString("fr-BE")}.`
-        );
+        setText("dashboard-status", `Données actualisées à ${new Date().toLocaleTimeString("fr-BE")}.`);
     } catch (error) {
         console.error("Erreur dashboard :", error);
         setText(

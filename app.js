@@ -1,13 +1,12 @@
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
+const rateLimit = require("express-rate-limit");
 const bcrypt = require("bcrypt");
 const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-
-app.set("trust proxy", 1);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -24,6 +23,27 @@ app.use(session({
         maxAge: 5 * 60 * 1000
     }
 }));
+
+const formulaireLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 5,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: {
+        error: "Trop de tentatives. Réessayez dans 15 minutes."
+    }
+});
+
+// Limitation des tentatives de connexion admin
+const loginLimiter = rateLimit({
+    windowMs: 10 * 60 * 1000, // 15 minutes
+    limit: 5,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: {
+        error: "Trop de tentatives de connexion. Réessayez plus tard."
+    }
+});
 
 
 app.set("view engine", "ejs");
@@ -57,7 +77,7 @@ app.get("/admin/login", (req, res) => {
     res.render("login", { error: null });
 });
 
-app.post("/admin/login", async (req, res) => {
+app.post("/admin/login", loginLimiter, async (req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -125,8 +145,7 @@ app.post("/admin/logout", requireAdmin, (req, res) => {
     });
 });
 
-
-app.post("/formulaire", async (req, res) => {
+app.post("/formulaire", formulaireLimiter, async (req, res) => {
     try {
         console.log("Données reçues :", req.body);
 
