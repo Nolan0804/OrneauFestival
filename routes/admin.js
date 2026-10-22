@@ -1,3 +1,4 @@
+
 const express = require("express");
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.get("/admin/login", (req, res) => {
         return res.redirect("/dashboard");
     }
 
-    res.render("login", { error: null });
+    return res.render("login", { error: null });
 });
 
 // Traiter la connexion
@@ -26,7 +27,7 @@ router.post("/admin/login", loginLimiter, async (req, res) => {
         );
 
         if (!validUsername || !validPassword) {
-            return res.status(401).render("admin/login", {
+            return res.status(401).render("login", {
                 error: "Identifiants incorrects."
             });
         }
@@ -34,17 +35,18 @@ router.post("/admin/login", loginLimiter, async (req, res) => {
         req.session.regenerate((err) => {
             if (err) {
                 console.error(err);
-                return res.status(500).render("admin/login", {
+                return res.status(500).render("login", {
                     error: "Une erreur est survenue."
                 });
             }
 
             req.session.isAdmin = true;
-            res.redirect("dashboard");
+            return res.redirect("/dashboard");
         });
     } catch (error) {
         console.error(error);
-        res.status(500).render("admin/login", {
+
+        return res.status(500).render("login", {
             error: "Une erreur est survenue."
         });
     }
@@ -56,7 +58,7 @@ router.post("/admin/logout", requireAdmin, (req, res, next) => {
         if (err) return next(err);
 
         res.clearCookie("festival.sid");
-        res.redirect("/admin/login");
+        return res.redirect("/admin/login");
     });
 });
 
