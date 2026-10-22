@@ -15,8 +15,10 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/home.css">
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
+    <script src="/js/artists.js" defer></script>
 </head>
-
 <body>
 <main class="page">
     <div class="page__container">
@@ -45,7 +47,7 @@
                     <span class="required">*</span>
                 </label>
 
-                <input type="number" id="age" name="age" min="0" max="100" step="1" placeholder="Votre âge" require>
+                <input type="number" id="age" name="age" min="0" max="100" step="1" placeholder="Votre âge" required>
             </div>
 
             <!-- QUESTION 2 : MOYEN DE LOCOMOTION -->
@@ -93,7 +95,7 @@
             </div>
 
             <!-- QUESTION 3 -->
-            <fieldset class="question">
+            <div class="question">
                 <legend>
                     <span class="question__number">3.</span>
                     Seriez-vous intéressé(e) par un festival à Gembloux ?
@@ -102,12 +104,7 @@
 
                 <div class="choices">
                     <label class="choice">
-                        <input
-                                type="radio"
-                                name="festivalInterest"
-                                value="yes"
-                                required
-                        >
+                        <input type="radio" name="festivalInterest" value="yes" required>
                         <span class="choice__card">
                                 <span class="choice__icon">✓</span>
                                 <strong>Oui, je suis intéressé(e) !</strong>
@@ -137,27 +134,29 @@
                             </span>
                     </label>
                 </div>
-            </fieldset>
+            </div>
 
             <!-- QUESTION 4 -->
+
+
+            <!-- QUESTION 4 : ARTISTES -->
             <div class="question">
                 <label for="artist">
                     <span class="question__number">4.</span>
-                    Quel(s) artiste(s) ou DJ(s) aimeriez-vous voir ?
+                    Quels artistes ou DJ aimeriez-vous voir ?
                     <span class="required">*</span>
                 </label>
 
-                <input
-                        type="text"
-                        id="artist"
-                        name="artist"
-                        maxlength="100"
-                        placeholder="DJ, rappeur, groupe..."
-                        required
-                >
+                <select id="artist" name="artist[]" multiple required>
+                </select>
 
-                <small>Vous pouvez mentionner plusieurs artistes.</small>
+                <small>
+                    Recherchez un artiste dans la liste ou saisissez son nom
+                    pour l'ajouter. Plusieurs choix sont possibles.
+                </small>
             </div>
+
+
 
             <!-- QUESTION 5 -->
             <div class="question">
@@ -167,15 +166,7 @@
                     <span class="optional">Facultatif</span>
                 </label>
 
-                <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        maxlength="254"
-                        autocomplete="email"
-                        placeholder="vous@exemple.be"
-                >
-
+                <input type="email" id="email" name="email" maxlength="254" autocomplete="email" placeholder="vous@exemple.be">
                 <small>Pour recevoir des nouvelles du projet.</small>
             </div>
 

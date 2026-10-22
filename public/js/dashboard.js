@@ -1,4 +1,3 @@
-
 const refreshButton = document.querySelector("#refresh-button");
 const toggleArtistsButton = document.querySelector("#toggle-artists");
 const artistsContent = document.querySelector("#artists-content");
