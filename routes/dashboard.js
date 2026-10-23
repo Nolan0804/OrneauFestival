@@ -29,11 +29,11 @@ router.get("/api/dashboard", requireAdmin, async (req, res) => {
                     WHERE festival_interest = 'maybe'
                 )::int AS maybe,
 
-                ROUND(AVG(age)::numeric, 1) AS average_age,
+                PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY budget) AS median_age,
                 MIN(age) AS age_minimum,
                 MAX(age) AS age_maximum,
 
-                ROUND(AVG(budget)::numeric, 2) AS average_budget,
+                PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY budget) AS median_budget,
                 MIN(budget) AS budget_minimum,
                 MAX(budget) AS budget_maximum,
 
@@ -90,7 +90,7 @@ router.get("/api/dashboard", requireAdmin, async (req, res) => {
             age: {
                 minimum: stats.age_minimum === null ? null : Number(stats.age_minimum),
                 maximum: stats.age_maximum === null ? null : Number(stats.age_maximum),
-                average: stats.average_age === null ? null : Number(stats.average_age)
+                median: stats.median_age === null ? null : Number(stats.median_age)
             },
 
             transport: {
@@ -104,7 +104,7 @@ router.get("/api/dashboard", requireAdmin, async (req, res) => {
             budget: {
                 minimum: stats.budget_minimum === null ? null : Number(stats.budget_minimum),
                 maximum: stats.budget_maximum === null ? null : Number(stats.budget_maximum),
-                average: stats.average_budget === null ? null : Number(stats.average_budget)
+                median: stats.median_budget === null ? null : Number(stats.median_budget)
             },
 
             artists: artistsResult.rows.map(artist => ({

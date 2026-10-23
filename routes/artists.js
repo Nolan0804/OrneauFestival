@@ -15,7 +15,6 @@ router.get("/artists", async (req, res) => {
         `);
 
         return res.status(200).json(result.rows);
-
     } catch (error) {
         console.error(
             "Erreur lors du chargement des artistes :",

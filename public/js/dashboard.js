@@ -69,27 +69,16 @@ async function loadDashboard() {
         }
 
         const data = await response.json();
-
+        setText("procent_interested", "Intéressé - " + ((data.interest.yes / data.total) * 100).toFixed(2) + "%")
+        setText("procent_maybe", "A convaincre - " + ((data.interest.maybe / data.total) * 100).toFixed(2) + "%")
+        setText("procent_no", "Pas intéressé - " + ((data.interest.no / data.total) * 100).toFixed(2) + "%")
         setText("yes-count", formatNumber(data.interest.yes));
         setText("maybe-count", formatNumber(data.interest.maybe));
         setText("no-count", formatNumber(data.interest.no));
-        setText("response-count",
-            `${formatNumber(data.total)} réponse${data.total > 1 ? "s" : ""}`);
-
-        setText(
-            "min-age",
-            data.age.minimum === null ? "—" : formatNumber(data.age.minimum, 1)
-        );
-        setText(
-            "average-age",
-            data.age.average === null ? "—" : formatNumber(data.age.average, 1)
-        );
-        setText(
-            "max-age",
-            data.age.maximum === null
-                ? "—"
-                : formatNumber(data.age.maximum, 1)
-        );
+        setText("response-count", `${formatNumber(data.total)} réponse${data.total > 1 ? "s" : ""}`);
+        setText("min-age", data.age.minimum === null ? "—" : formatNumber(data.age.minimum, 1));
+        setText("median-age", data.age.median === null ? "—" : formatNumber(data.age.median, 1));
+        setText("max-age", data.age.maximum === null ? "—" : formatNumber(data.age.maximum, 1));
 
         setText("transport-bus", data.transport.bus === null ? "—" : formatNumber(data.transport.bus));
         setText("transport-voiture", data.transport.car === null ? "—" : formatNumber(data.transport.car));
@@ -104,7 +93,7 @@ async function loadDashboard() {
         setText("transport-velo-pourcentage", data.transport.velo === null ? "—" : (formatNumber(data.transport.velo) / data.total * 100).toFixed(0));
 
         setText("min-budget", data.budget.minimum === null ? "—" : formatNumber(data.budget.minimum, 2));
-        setText("average-budget",data.budget.average === null ? "—" : formatNumber(data.budget.average, 2));
+        setText("median-budget",data.budget.median === null ? "—" : formatNumber(data.budget.median, 2));
         setText("max-budget", data.budget.maximum === null ? "—" : formatNumber(data.budget.maximum, 2));
 
         artistsData = data.artists || [];
