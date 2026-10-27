@@ -1,8 +1,14 @@
+
+/* ========================================
+   CONTENEUR PRINCIPAL
+======================================== */
+
 .thanks-you {
     width: min(100% - 2rem, 650px);
     margin: 5rem auto;
     padding: 3rem 2rem;
 
+    box-sizing: border-box;
     text-align: center;
 
     background: rgb(255 255 255 / 0.66);
@@ -29,6 +35,7 @@
     font-size: 2.5rem;
     font-weight: 700;
 }
+
 /* ========================================
    TITRE PRINCIPAL
 ======================================== */
@@ -61,7 +68,7 @@
 ======================================== */
 
 .thanks-you__message {
-    margin: 0 0 2rem;
+    margin: 0 0 1.5rem;
 
     color: var(--accent-dark);
     font-size: 14px;
@@ -70,44 +77,113 @@
 }
 
 /* ========================================
-   BOUTON DE RETOUR
+   STYLE COMMUN DES DEUX BOUTONS
 ======================================== */
 
-.thanks-you__button {
-    display: inline-flex;
+.thanks-you__button,
+.thanks-you__instagram {
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 9px;
 
-    min-height: 50px;
-    padding: 14px 20px;
+    width: 100%;
+    max-width: 320px;
+    min-height: 44px;
+    box-sizing: border-box;
 
-    border: 1px solid var(--accent);
+    margin: 0 auto;
+    padding: 10px 16px;
+
+    border: 1px solid transparent;
     border-radius: 9px;
 
-    background: var(--accent);
     color: #ffffff;
 
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
     text-decoration: none;
 
     cursor: pointer;
 
     transition:
-        background-color 180ms ease,
-        border-color 180ms ease;
+            background-color 180ms ease,
+            border-color 180ms ease,
+            transform 180ms ease,
+            box-shadow 180ms ease;
 }
 
-/* Survol du bouton */
+/* ========================================
+   BOUTON INSTAGRAM
+======================================== */
+
+.thanks-you__instagram {
+    margin-bottom: 12px;
+
+    background: linear-gradient(
+            110deg,
+            #833ab4 0%,
+            #c13584 40%,
+            #e1306c 72%,
+            #fd8d32 100%
+    );
+
+    box-shadow: 0 3px 9px rgb(193 53 132 / 16%);
+}
+
+/* Icône Instagram */
+.thanks-you__instagram-icon {
+    width: 19px;
+    height: 19px;
+    flex-shrink: 0;
+}
+
+/* Texte Instagram */
+.thanks-you__instagram span:nth-child(2) {
+    display: block;
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.thanks-you__instagram strong {
+    display: block;
+
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+/* Masquer le sous-texte */
+.thanks-you__instagram small {
+    display: none;
+}
+
+/* Survol Instagram sur PC */
+.thanks-you__instagram:hover {
+    box-shadow: 0 5px 14px rgb(193 53 132 / 25%);
+    transform: translateY(-1px);
+}
+
+/* ========================================
+   BOUTON RETOUR À L'ACCUEIL
+======================================== */
+
+.thanks-you__button {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
 .thanks-you__button:hover {
     background: var(--accent-dark);
     border-color: var(--accent-dark);
 }
 
-/* Navigation au clavier */
-.thanks-you__button:focus-visible {
+/* Focus clavier */
+.thanks-you__button:focus-visible,
+.thanks-you__instagram:focus-visible {
     outline: 3px solid #c6d9ff;
     outline-offset: 3px;
 }
@@ -121,6 +197,13 @@
         width: min(100% - 2rem, 650px);
         margin: 3rem auto;
         padding: 2.5rem 1.75rem;
+    }
+
+    .thanks-you__button,
+    .thanks-you__instagram {
+        max-width: 320px;
+        min-height: 44px;
+        padding: 10px 14px;
     }
 }
 
@@ -167,14 +250,26 @@
         line-height: 1.7;
     }
 
-    .thanks-you__button {
-        display: flex;
+    .thanks-you__button,
+    .thanks-you__instagram {
         width: 100%;
-        min-height: 50px;
+        max-width: 320px;
+        min-height: 44px;
 
-        padding: 13px 16px;
-
+        padding: 10px 12px;
         font-size: 13px;
+    }
+
+    .thanks-you__instagram {
+        margin-bottom: 12px;
+    }
+
+    .thanks-you__instagram:active {
+        transform: scale(0.98);
+    }
+
+    .thanks-you__button:active {
+        transform: scale(0.98);
     }
 }
 
@@ -192,11 +287,25 @@
         font-size: 1.6rem;
     }
 
-    .thanks-you__description {
+    .thanks-you__description,
+    .thanks-you__message {
         font-size: 12px;
     }
 
-    .thanks-you__message {
+    .thanks-you__button,
+    .thanks-you__instagram {
+        max-width: 100%;
+        min-height: 42px;
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+
+    .thanks-you__instagram-icon {
+        width: 17px;
+        height: 17px;
+    }
+
+    .thanks-you__instagram strong {
         font-size: 12px;
     }
 }
@@ -206,7 +315,8 @@
 ======================================== */
 
 @media (prefers-reduced-motion: reduce) {
-    .thanks-you__button {
+    .thanks-you__button,
+    .thanks-you__instagram {
         transition: none;
     }
 }
