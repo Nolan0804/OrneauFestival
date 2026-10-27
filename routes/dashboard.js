@@ -29,7 +29,7 @@ router.get("/api/dashboard", requireAdmin, async (req, res) => {
                     WHERE festival_interest = 'maybe'
                 )::int AS maybe,
 
-                PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY budget) AS median_age,
+                PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY age) AS median_age,
                 MIN(age) AS age_minimum,
                 MAX(age) AS age_maximum,
 
