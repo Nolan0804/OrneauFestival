@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -19,11 +18,7 @@
 
         <header class="dashboard-header">
             <div class="dashboard-header__brand">
-                <img
-                    src="/images/Armoiries_Gembloux.png"
-                    alt="Armoiries de Gembloux"
-                    class="dashboard-header__logo"
-                >
+                <img src="/images/Armoiries_Gembloux.png" alt="Armoiries de Gembloux" class="dashboard-header__logo">
 
                 <div>
                     <p class="dashboard-header__eyebrow">Orneau Festival</p>
@@ -34,14 +29,31 @@
                 </div>
             </div>
 
-            <button
-                type="button"
-                class="refresh-button"
-                id="refresh-button"
-            >
-                <span aria-hidden="true">↻</span>
-                Actualiser
-            </button>
+            <div class="dashboard-header__actions">
+                <button type="button" class="refresh-button" id="refresh-button">
+                    <span aria-hidden="true">↻</span>
+                    Actualiser
+                </button>
+
+                <% if (role === "organisateur") { %>
+                    <button
+                            type="button"
+                            class="add-user-button"
+                            id="open-user-modal"
+                    >
+                        <span aria-hidden="true">+</span>
+                        Ajouter un utilisateur
+                    </button>
+                <% } %>
+
+                <form action="/admin/logout" method="POST" class="logout-form">
+                    <button type="submit" class="logout-button">
+                        <span aria-hidden="true">↪</span>
+                        Déconnexion
+                    </button>
+                </form>
+            </div>
+
         </header>
 
         <section class="dashboard-section" aria-labelledby="interest-title">
@@ -317,5 +329,105 @@
 
     </div>
 </main>
+
+<div class="modal-overlay" id="user-modal" aria-hidden="true">
+    <section class="user-modal" role="dialog" aria-modal="true" aria-labelledby="user-modal-title">
+        <div class="user-modal__header">
+            <div>
+                <h2 id="user-modal-title">Ajouter un utilisateur</h2>
+                <p>Crée un compte pour accéder au dashboard.</p>
+            </div>
+
+            <button type="button" class="user-modal__close" id="close-user-modal" aria-label="Fermer">
+                &times;
+            </button>
+        </div>
+
+        <form action="/admin/users" method="POST" class="user-form">
+            <div class="user-form__field">
+                <label for="new-user-name">Nom</label>
+                <input type="text" id="new-user-name" name="name" placeholder="Nom de l'utilisateur" required>
+            </div>
+
+            <div class="user-form__field">
+                <label for="new-user-email">Adresse e-mail</label>
+                <input type="email" id="new-user-email" name="email" placeholder="nom@exemple.be" required>
+            </div>
+
+            <div class="user-form__field">
+                <label for="new-user-password">Mot de passe</label>
+                <input type="password" id="new-user-password" name="password" minlength="12" autocomplete="new-password" placeholder="12 caractères minimum" required>
+            </div>
+
+            <div class="user-form__field">
+                <label for="new-user-role">Rôle</label>
+                <select id="new-user-role" name="role" required>
+                    <option value="" disabled selected>Choisir un rôle</option>
+                    <option value="organisateur">Organisateur</option>
+                    <option value="communication">Communication</option>
+                    <option value="collaborateur">Collaborateur</option>
+                    <option value="benevole">Bénévole</option>
+                </select>
+            </div>
+
+            <div class="user-modal__actions">
+                <button type="button" class="user-modal__cancel" id="cancel-user-modal">
+                    Annuler
+                </button>
+
+                <button type="submit" class="user-modal__submit">
+                    Créer l'utilisateur
+                </button>
+            </div>
+        </form>
+    </section>
+</div>
+
+<script>
+    (() => {
+        const modal = document.getElementById("user-modal");
+        const openButton = document.getElementById("open-user-modal");
+        const closeButton = document.getElementById("close-user-modal");
+        const cancelButton = document.getElementById("cancel-user-modal");
+
+        if (!modal || !openButton) return;
+
+        let previousFocus = null;
+
+        function openModal() {
+            previousFocus = document.activeElement;
+            modal.classList.add("is-open");
+            modal.setAttribute("aria-hidden", "false");
+            document.body.style.overflow = "hidden";
+
+            modal.querySelector("input")?.focus();
+        }
+
+        function closeModal() {
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden", "true");
+            document.body.style.overflow = "";
+
+            previousFocus?.focus();
+        }
+
+        openButton.addEventListener("click", openModal);
+        closeButton?.addEventListener("click", closeModal);
+        cancelButton?.addEventListener("click", closeModal);
+
+        modal.addEventListener("click", (event) => {
+            if (event.target === modal) closeModal();
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (
+                event.key === "Escape" &&
+                modal.classList.contains("is-open")
+            ) {
+                closeModal();
+            }
+        });
+    })();
+</script>
 </body>
 </html>

@@ -3,17 +3,17 @@
     padding: 42px 24px 28px;
 
     background:
-        radial-gradient(
-            ellipse at 12% 0%,
-            #dce9ff 0%,
-            transparent 42%
-        ),
-        linear-gradient(
-            145deg,
-            #f4f7ff 0%,
-            #edf3ff 55%,
-            #e6efff 100%
-        );
+            radial-gradient(
+                    ellipse at 12% 0%,
+                    #dce9ff 0%,
+                    transparent 42%
+            ),
+            linear-gradient(
+                    145deg,
+                    #f4f7ff 0%,
+                    #edf3ff 55%,
+                    #e6efff 100%
+            );
 
     font-family: Inter, "Segoe UI", Arial, sans-serif;
     color: var(--accent-dark);
@@ -78,9 +78,20 @@
     line-height: 1.7;
 }
 
-/* ===== BOUTON ===== */
+/* ===== ACTIONS DE L'EN-TÊTE ===== */
 
+.dashboard-header__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+/* Base commune : Actualiser, Ajouter un utilisateur et Déconnexion */
 .refresh-button,
+.add-user-button,
+.logout-button,
 .toggle-button {
     display: inline-flex;
     align-items: center;
@@ -90,15 +101,35 @@
     padding: 10px 15px;
 
     border: 1px solid var(--border);
-    border-radius: 9px;
+    border-radius: 10px;
     background: var(--surface);
     color: var(--accent-dark);
 
     font: inherit;
     font-size: 12px;
     font-weight: 700;
+    line-height: 1.3;
+    text-decoration: none;
     cursor: pointer;
-    transition: border-color 160ms ease, background 160ms ease;
+
+    transition:
+            border-color 180ms ease,
+            background-color 180ms ease,
+            color 180ms ease,
+            box-shadow 180ms ease,
+            transform 180ms ease;
+}
+
+/* Bouton Actualiser */
+.refresh-button {
+    box-shadow: 0 2px 5px rgb(20 40 80 / 4%);
+}
+
+.refresh-button span {
+    display: inline-block;
+    font-size: 20px;
+    line-height: 1;
+    transition: transform 300ms ease;
 }
 
 .refresh-button:hover,
@@ -107,10 +138,69 @@
     background: #f5f8ff;
 }
 
-.refresh-button span {
+.refresh-button:hover span {
+    transform: rotate(45deg);
+}
+
+/* Ajouter un utilisateur : même forme, variante bleue */
+.add-user-button {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #ffffff;
+    box-shadow: 0 2px 5px rgb(20 40 80 / 8%);
+}
+
+.add-user-button span {
+    display: inline-block;
     font-size: 20px;
+    font-weight: 400;
     line-height: 1;
 }
+
+.add-user-button:hover {
+    border-color: var(--accent-dark);
+    background: var(--accent-dark);
+    box-shadow: 0 3px 8px rgb(20 40 80 / 12%);
+}
+
+/* Déconnexion : même forme, variante rouge */
+.logout-form {
+    margin: 0;
+}
+
+.logout-button {
+    border-color: #fecaca;
+    background: #ffffff;
+    color: #dc2626;
+    box-shadow: 0 2px 5px rgb(20 40 80 / 4%);
+}
+
+.logout-button span {
+    display: inline-block;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.logout-button:hover {
+    border-color: #f87171;
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.logout-button:active {
+    background: #fee2e2;
+}
+
+/* Focus clavier */
+.refresh-button:focus-visible,
+.add-user-button:focus-visible,
+.logout-button:focus-visible,
+.toggle-button:focus-visible,
+a:focus-visible {
+    outline: 3px solid #c6d9ff;
+    outline-offset: 3px;
+}
+
 
 /* ===== SECTIONS ===== */
 
@@ -439,7 +529,8 @@
     border: 0;
 }
 
-button:focus-visible {
+button:focus-visible,
+a:focus-visible {
     outline: 3px solid #c6d9ff;
     outline-offset: 3px;
 }
@@ -520,9 +611,9 @@ button:focus-visible {
 
     border-radius: inherit;
     background: linear-gradient(
-        90deg,
-        var(--accent),
-        #6a9cff
+            90deg,
+            var(--accent),
+            #6a9cff
     );
 
     transition: width 300ms ease;
@@ -559,6 +650,165 @@ button:focus-visible {
     color: var(--text);
     font-size: 11px;
     line-height: 1.6;
+}
+
+/* Fond du popup */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(5px);
+}
+
+.modal-overlay.is-open {
+    display: flex;
+}
+
+/* Fenêtre */
+.user-modal {
+    width: 100%;
+    max-width: 480px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    padding: 28px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+    animation: user-modal-appear 0.2s ease-out;
+}
+
+.user-modal__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.user-modal__header h2 {
+    margin: 0 0 8px;
+    color: #111827;
+    font-size: 22px;
+}
+
+.user-modal__header p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.user-modal__close {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 10px;
+    background: #f3f4f6;
+    color: #374151;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.user-modal__close:hover {
+    background: #e5e7eb;
+}
+
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.user-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.user-form__field label {
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.user-form__field input,
+.user-form__field select {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 46px;
+    padding: 11px 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    background: #fff;
+    color: #111827;
+    font: inherit;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.user-form__field input:focus,
+.user-form__field select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.13);
+}
+
+.user-modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.user-modal__actions button {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 10px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.user-modal__cancel {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.user-modal__cancel:hover {
+    background: #e5e7eb;
+}
+
+.user-modal__submit {
+    background: #2563eb;
+    color: #fff;
+}
+
+.user-modal__submit:hover {
+    background: #1d4ed8;
+}
+
+.user-modal__actions button:focus-visible,
+.user-modal__close:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+@keyframes user-modal-appear {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 /* ========================================
@@ -679,9 +929,21 @@ button:focus-visible {
         font-size: 12px;
     }
 
-    .refresh-button {
+    .dashboard-header__actions {
         width: 100%;
-        min-height: 46px;
+        align-items: stretch;
+        margin-top: 2px;
+    }
+
+    .refresh-button,
+    .add-user-button,
+    .logout-button {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .logout-form {
+        width: 100%;
     }
 
     /* Sections */
@@ -896,6 +1158,19 @@ button:focus-visible {
         padding-top: 16px;
         font-size: 10px;
     }
+
+    .user-modal {
+        padding: 22px 18px;
+        border-radius: 14px;
+    }
+
+    .user-modal__actions {
+        flex-direction: column-reverse;
+    }
+
+    .user-modal__actions button {
+        width: 100%;
+    }
 }
 
 /* ========================================
@@ -955,7 +1230,6 @@ button:focus-visible {
         padding: 14px 10px;
     }
 }
-/* ===== ACCESSIBILITÉ ===== */
 
 @media (prefers-reduced-motion: reduce) {
     *,
