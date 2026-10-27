@@ -1,25 +1,23 @@
-
 const express = require("express");
 const router = express.Router();
-
 const pool = require("../database");
-const requireAdmin = require("../middleware/requireAdmin");
+const requireRole = require("../middleware/requireRole");
 
-// Page du dashboard
-router.get("/dashboard", requireAdmin, (req, res) => {
-    return res.render("dashboard");
-});
+router.get("/dashboard", requireRole("organisateur", "communication", "benevole", "collaborateur"),
+    (req, res) => {
+        return res.render("dashboard", {
+            role: req.session.userRole
+        });
+    }
+);
 
-// API des statistiques
-router.get("/api/dashboard", requireAdmin, async (req, res) => {
+router.get("/api/dashboard", requireRole("organisateur", "communication", "benevole", "collaborateur"), async (req, res) => {
     try {
         const statsSql = `
             SELECT
                 COUNT(*)::int AS total,
 
-                COUNT(*) FILTER (
-                    WHERE festival_interest = 'yes'
-                )::int AS interested,
+                COUNT(*) FILTER (WHERE festival_interest = 'yes')::int AS interested,
 
                 COUNT(*) FILTER (
                     WHERE festival_interest = 'no'

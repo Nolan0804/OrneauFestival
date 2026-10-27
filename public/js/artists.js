@@ -1,5 +1,3 @@
-
-
 const artistSelect = document.getElementById("artist");
 
 fetch("/api/artists")

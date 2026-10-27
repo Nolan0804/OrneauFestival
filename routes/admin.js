@@ -1,47 +1,74 @@
-
 const express = require("express");
 const router = express.Router();
-
+const pool = require("../database");
 const bcrypt = require("bcrypt");
 const { loginLimiter } = require("../middleware/rateLimiters");
-const requireAdmin = require("../middleware/requireAdmin");
+const requireRole = require("../middleware/requireRole");
 
-// Afficher la page de connexion
 router.get("/admin/login", (req, res) => {
-    if (req.session?.isAdmin === true) {
+    if (req.session?.userId && req.session?.userRole) {
         return res.redirect("/dashboard");
     }
 
     return res.render("login", { error: null });
 });
 
-// Traiter la connexion
 router.post("/admin/login", loginLimiter, async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        const validUsername = username === process.env.ADMIN_USERNAME;
-        const validPassword = await bcrypt.compare(
-            password,
-            process.env.ADMIN_PASSWORD_HASH
+        if (typeof username !== "string" || typeof password !== "string" || !username.trim() || !password) {
+            return res.status(400).render("login", {
+                error: "Veuillez remplir tous les champs."
+            });
+        }
+
+        const result = await pool.query(
+            `SELECT id, name, email, password_hash, role
+             FROM "user"
+             WHERE LOWER(email) = LOWER($1)`,
+            [username.trim()]
         );
 
-        if (!validUsername || !validPassword) {
+        const user = result.rows[0];
+
+        if (!user) {
             return res.status(401).render("login", {
-                error: "Identifiants incorrects."
+                error: "Aucun compte ne correspond à cette adresse e-mail."
+            });
+        }
+
+        const validPassword = await bcrypt.compare(password, user.password_hash);
+
+        if (!validPassword) {
+            return res.status(401).render("login", {
+                error: "Mot de passe incorrect."
             });
         }
 
         req.session.regenerate((err) => {
             if (err) {
                 console.error(err);
+
                 return res.status(500).render("login", {
                     error: "Une erreur est survenue."
                 });
             }
 
-            req.session.isAdmin = true;
-            return res.redirect("/dashboard");
+            req.session.userId = user.id;
+            req.session.userRole = user.role;
+
+            return req.session.save((saveErr) => {
+                if (saveErr) {
+                    console.error(saveErr);
+
+                    return res.status(500).render("login", {
+                        error: "Une erreur est survenue."
+                    });
+                }
+
+                return res.redirect("/dashboard");
+            });
         });
     } catch (error) {
         console.error(error);
@@ -53,12 +80,16 @@ router.post("/admin/login", loginLimiter, async (req, res) => {
 });
 
 // Déconnexion
-router.post("/admin/logout", requireAdmin, (req, res, next) => {
+router.post("/admin/logout", (req, res, next) => {
+    if (!req.session) {
+        return res.redirect("/");
+    }
+
     req.session.destroy((err) => {
         if (err) return next(err);
 
         res.clearCookie("festival.sid");
-        return res.redirect("/admin/login");
+        return res.redirect("/");
     });
 });
 

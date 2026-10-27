@@ -1,11 +1,8 @@
 const express = require("express");
 const router = express.Router();
-
 const pool = require("../database");
-const requireAdmin = require("../middleware/requireAdmin");
+const requireRole = require("../middleware/requireRole");
 
-// GET /api/artists
-// Récupère la liste des artistes pour Tom Select.
 router.get("/artists", async (req, res) => {
     try {
         const result = await pool.query(`
@@ -27,25 +24,7 @@ router.get("/artists", async (req, res) => {
     }
 });
 
-router.get("/artists", async (req, res) => {
-    try {
-        const result = await pool.query(`
-            SELECT id, name
-            FROM artist
-            ORDER BY name ASC
-        `);
-
-        return res.json(result.rows);
-    } catch (error) {
-        console.error("Erreur GET /api/artists :", error.message);
-
-        return res.status(500).json({
-            error: "Impossible de récupérer les artistes."
-        });
-    }
-});
-
-router.post("/artists", requireAdmin, async (req, res) => {
+router.post("/artists", async (req, res) => {
     try {
         const { name } = req.body;
 

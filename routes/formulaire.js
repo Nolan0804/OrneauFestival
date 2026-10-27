@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const pool = require("../database");
 const { formulaireLimiter } = require("../middleware/rateLimiters");
 
@@ -37,19 +36,9 @@ router.post("/formulaire", formulaireLimiter, async (req, res) => {
         }
 
         // Normaliser la sélection en tableau
-        const artistes = Array.isArray(artist)
-            ? artist
-            : typeof artist === "string"
-                ? [artist]
-                : [];
+        const artistes = Array.isArray(artist) ? artist : typeof artist === "string" ? [artist] : [];
 
-        if (
-            artistes.length < 1 ||
-            artistes.length > 5 ||
-            artistes.some(value =>
-                typeof value !== "string" || !value.trim()
-            )
-        ) {
+        if (artistes.length < 1 || artistes.length > 5 || artistes.some(value => typeof value !== "string" || !value.trim())) {
             return res.status(400).send(
                 "Veuillez sélectionner entre 1 et 5 artistes."
             );
@@ -58,28 +47,17 @@ router.post("/formulaire", formulaireLimiter, async (req, res) => {
         const ageNumber = Number(age);
         const budgetNumber = Number(budget);
 
-        if (
-            !Number.isInteger(ageNumber) ||
-            ageNumber < 0 ||
-            ageNumber > 100
-        ) {
+        if (!Number.isInteger(ageNumber) || ageNumber < 0 || ageNumber > 100) {
             return res.status(400).send("Âge invalide.");
         }
 
-        if (
-            !Number.isInteger(budgetNumber) ||
-            budgetNumber < 0 ||
-            budgetNumber > 10000
-        ) {
+        if (!Number.isInteger(budgetNumber) || budgetNumber < 0 || budgetNumber > 10000) {
             return res.status(400).send("Budget invalide.");
         }
 
         const wantsMarketing = marketingConsent === "1";
 
-        const normalizedEmail =
-            typeof email === "string" && email.trim()
-                ? email.trim().toLowerCase()
-                : null;
+        const normalizedEmail = typeof email === "string" && email.trim() ? email.trim().toLowerCase() : null;
 
         if (wantsMarketing && !normalizedEmail) {
             return res.status(400).send(
