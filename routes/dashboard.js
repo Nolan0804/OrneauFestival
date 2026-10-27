@@ -6,7 +6,8 @@ const requireRole = require("../middleware/requireRole");
 router.get("/dashboard", requireRole("organisateur", "communication", "benevole", "collaborateur"),
     (req, res) => {
         return res.render("dashboard", {
-            role: req.session.userRole
+            role: req.session.userRole,
+            name: req.session.userName
         });
     }
 );

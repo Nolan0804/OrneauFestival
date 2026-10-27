@@ -65,6 +65,7 @@ router.post("/admin/login", loginLimiter, async (req, res) => {
 
             req.session.userId = user.id;
             req.session.userRole = user.role;
+            req.session.userName = user.name;
 
             return req.session.save((saveErr) => {
                 if (saveErr) {
