@@ -3,14 +3,12 @@ const router = express.Router();
 const pool = require("../database");
 const requireRole = require("../middleware/requireRole");
 
-router.get("/dashboard", requireRole("organisateur", "communication", "benevole", "collaborateur"),
-    (req, res) => {
-        return res.render("dashboard", {
-            role: req.session.userRole,
-            name: req.session.userName
-        });
-    }
-);
+router.get("/dashboard", requireRole("organisateur", "communication", "benevole", "collaborateur"), (req, res) => {
+    return res.render("dashboard", {
+        role: req.session.userRole,
+        name: req.session.userName
+    });
+});
 
 router.get("/api/dashboard", requireRole("organisateur", "communication", "benevole", "collaborateur"), async (req, res) => {
     try {

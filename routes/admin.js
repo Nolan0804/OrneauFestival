@@ -12,7 +12,6 @@ const ALLOWED_ROLES = [
     "benevole"
 ];
 
-
 router.get("/admin/login", (req, res) => {
     if (req.session?.userId && req.session?.userRole) {
         return res.redirect("/dashboard");
@@ -88,7 +87,6 @@ router.post("/admin/login", loginLimiter, async (req, res) => {
     }
 });
 
-// Déconnexion
 router.post("/admin/logout", (req, res, next) => {
     if (!req.session) {
         return res.redirect("/");
