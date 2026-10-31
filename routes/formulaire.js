@@ -57,7 +57,10 @@ router.post("/formulaire", formulaireLimiter, async (req, res) => {
 
         const wantsMarketing = marketingConsent === "1";
 
-        const normalizedEmail = typeof email === "string" && email.trim() ? email.trim().toLowerCase() : null;
+        // L'e-mail n'est conservé que si le consentement marketing est donné
+        const normalizedEmail = wantsMarketing && typeof email === "string" && email.trim()
+            ? email.trim().toLowerCase()
+            : null;
 
         if (wantsMarketing && !normalizedEmail) {
             return res.status(400).send(
@@ -67,6 +70,10 @@ router.post("/formulaire", formulaireLimiter, async (req, res) => {
 
         if (normalizedEmail && normalizedEmail.length > 254) {
             return res.status(400).send("Adresse e-mail trop longue.");
+        }
+
+        if (normalizedEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+            return res.status(400).send("Adresse e-mail invalide.");
         }
 
         // Transaction PostgreSQL

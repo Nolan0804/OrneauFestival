@@ -413,6 +413,69 @@
     border-radius: 3px;
 }
 
+.consent__email {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: consent-email-in 200ms ease;
+}
+
+/* Masqué tant que la case n'est pas cochée (fonctionne aussi avant le chargement du JS) */
+.consent__email[hidden],
+.consent:not(:has(#marketingConsent:checked)) .consent__email {
+    display: none;
+}
+
+.consent__email label {
+    color: var(--accent-dark);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.7;
+}
+
+.consent__email input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    height: 51px;
+    padding: 0 14px;
+    border: 1px solid #dce5f2;
+    border-radius: 9px;
+    outline: none;
+    background: #fff;
+    color: var(--accent);
+    font: inherit;
+    font-size: 14px;
+    transition: border-color 180ms ease;
+}
+
+.consent__email input::placeholder {
+    color: var(--text);
+    opacity: 70%;
+}
+
+.consent__email input:hover,
+.consent__email input:focus {
+    border-color: var(--accent);
+}
+
+@keyframes consent-email-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .consent__email {
+        animation: none;
+    }
+}
+
 .submit-button {
     display: flex;
     width: 100%;

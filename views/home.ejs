@@ -18,6 +18,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
     <script src="/js/artists.js" defer></script>
+    <script src="/js/consent.js" defer></script>
 </head>
 <body>
 <main class="page">
@@ -158,22 +159,10 @@
 
 
 
-            <!-- QUESTION 5 -->
-            <div class="question">
-                <label for="email">
-                    <span class="question__number">5.</span>
-                    Votre adresse e-mail
-                    <span class="optional">Facultatif</span>
-                </label>
-
-                <input type="email" id="email" name="email" maxlength="254" autocomplete="email" placeholder="vous@exemple.be">
-                <small>Pour recevoir des nouvelles du projet.</small>
-            </div>
-
-            <!-- QUESTION 6 -->
+            <!-- QUESTION 5 : ACTUALITÉS -->
             <fieldset class="question consent">
                 <legend>
-                    <span class="question__number">6.</span>
+                    <span class="question__number">5.</span>
                     Souhaitez-vous recevoir nos actualités ?
                 </legend>
 
@@ -185,12 +174,20 @@
                 </p>
 
                 <label class="consent__label">
-                    <input type="checkbox" name="marketingConsent" value="1">
+                    <input type="checkbox" id="marketingConsent" name="marketingConsent" value="1" aria-controls="consent-email">
                     <span>
                         Oui, j'accepte de recevoir ces communications.
                         Je pourrai retirer mon consentement à tout moment.
                     </span>
                 </label>
+
+                <div class="consent__email" id="consent-email">
+                    <label for="email">
+                        Votre adresse e-mail
+                        <span class="required">*</span>
+                    </label>
+                    <input type="email" id="email" name="email" maxlength="254" autocomplete="email" placeholder="vous@exemple.be">
+                </div>
 
                 <small>
                     Ce choix est facultatif et n'empêche pas de participer au sondage.
