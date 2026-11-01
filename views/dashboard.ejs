@@ -9,6 +9,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/report.css">
     <script src="/js/dashboard.js" defer></script>
 </head>
 
@@ -36,11 +37,7 @@
                 </button>
 
                 <% if (role === "organisateur") { %>
-                    <button
-                            type="button"
-                            class="add-user-button"
-                            id="open-user-modal"
-                    >
+                    <button type="button" class="add-user-button" id="open-user-modal">
                         <span aria-hidden="true">+</span>
                         Ajouter un utilisateur
                     </button>
@@ -366,9 +363,18 @@
             </div>
         </section>
 
-        <p class="dashboard-status" id="dashboard-status" role="status">
-            Chargement des statistiques...
-        </p>
+        <div class="dashboard-toolbar">
+            <p class="dashboard-status" id="dashboard-status" role="status">
+                Chargement des statistiques...
+            </p>
+
+            <% if (role === "organisateur") {%>
+                <button type="button" class="export-button" id="export-button">
+                    <span aria-hidden="true">↓</span>
+                    Exporter en PDF
+                </button>
+            <% } %>
+        </div>
 
         <footer class="dashboard-footer">
             <span>Orneau Festival</span>
@@ -377,6 +383,82 @@
 
     </div>
 </main>
+
+<%# Rapport PDF : invisible à l'écran, rempli par exportStatistics() dans dashboard.js %>
+<div class="report">
+    <header class="report-header">
+        <img src="/images/favicon.png" alt="" class="report-header__logo">
+
+        <div class="report-header__title">
+            <p class="report-eyebrow">Orneau Festival</p>
+            <h1>Rapport du sondage</h1>
+        </div>
+
+        <p class="report-header__date" id="report-date"></p>
+    </header>
+
+    <div class="report-kpis">
+        <div class="report-kpi">
+            <p class="report-kpi__value" id="report-total"></p>
+            <p class="report-kpi__label">Réponses</p>
+        </div>
+        <div class="report-kpi">
+            <p class="report-kpi__value" id="report-interested"></p>
+            <p class="report-kpi__label">Intéressés</p>
+        </div>
+        <div class="report-kpi">
+            <p class="report-kpi__value" id="report-budget"></p>
+            <p class="report-kpi__label">Budget médian</p>
+        </div>
+        <div class="report-kpi">
+            <p class="report-kpi__value" id="report-contacts"></p>
+            <p class="report-kpi__label">Contacts marketing</p>
+        </div>
+    </div>
+
+    <section class="report-section">
+        <h2>Intérêt pour le festival</h2>
+        <table class="report-table">
+            <thead>
+                <tr><th>Réponse</th><th>Nombre</th><th>Part</th></tr>
+            </thead>
+            <tbody id="report-interest"></tbody>
+        </table>
+    </section>
+
+    <section class="report-section">
+        <h2>Mobilité des participants</h2>
+        <table class="report-table">
+            <thead>
+                <tr><th>Transport</th><th>Personnes</th><th>Part</th></tr>
+            </thead>
+            <tbody id="report-transport"></tbody>
+        </table>
+    </section>
+
+    <section class="report-section">
+        <h2>Profil des répondants</h2>
+        <table class="report-table">
+            <thead>
+                <tr><th>Indicateur</th><th>Minimum</th><th>Médiane</th><th>Maximum</th></tr>
+            </thead>
+            <tbody id="report-profile"></tbody>
+        </table>
+        <p class="report-note">Budget : prix accepté pour une journée.</p>
+    </section>
+
+    <section class="report-section">
+        <h2>Top 10 des artistes souhaités</h2>
+        <table class="report-table">
+            <thead>
+                <tr><th>Rang</th><th class="report-table__left">Artiste</th><th>Mentions</th></tr>
+            </thead>
+            <tbody id="report-artists"></tbody>
+        </table>
+    </section>
+
+    <p class="report-footer">Données agrégées issues du sondage</p>
+</div>
 
 <div class="modal-overlay" id="user-modal" aria-hidden="true">
     <section class="user-modal" role="dialog" aria-modal="true" aria-labelledby="user-modal-title">

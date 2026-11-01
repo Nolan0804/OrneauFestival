@@ -1,4 +1,5 @@
 const refreshButton = document.querySelector("#refresh-button");
+const exportButton = document.querySelector("#export-button");
 const toggleArtistsButton = document.querySelector("#toggle-artists");
 const artistsContent = document.querySelector("#artists-content");
 const artistsList = document.querySelector("#artists-list");
@@ -143,15 +144,137 @@ async function loadDashboard() {
         renderArtists();
 
         setText("dashboard-status", `Données actualisées à ${new Date().toLocaleTimeString("fr-BE")}.`);
+        return data;
     } catch (error) {
         console.error("Erreur dashboard :", error);
         setText(
             "dashboard-status",
             "Impossible de charger les statistiques. Vérifiez votre connexion au serveur."
         );
+        return null;
     } finally {
         refreshButton.disabled = false;
     }
+}
+
+function formatOptional(value, decimals) {
+    return value === null ? "—" : formatNumber(value, decimals);
+}
+
+// Une cellule est soit du texte, soit un élément. textContent/append protègent
+// des noms d'artistes saisis librement dans le sondage.
+function fillReportTable(id, rows) {
+    const body = document.getElementById(id);
+    body.replaceChildren();
+
+    for (const cells of rows) {
+        const row = document.createElement("tr");
+
+        for (const cell of cells) {
+            const td = document.createElement("td");
+            td.append(cell);
+            row.appendChild(td);
+        }
+
+        body.appendChild(row);
+    }
+
+    return body;
+}
+
+function createShareCell(count, total) {
+    const percent = percentOf(count, total);
+
+    const share = document.createElement("div");
+    share.className = "report-share";
+
+    const track = document.createElement("span");
+    track.className = "report-share__track";
+
+    const fill = document.createElement("span");
+    fill.className = "report-share__fill";
+    fill.style.width = `${percent}%`;
+    track.appendChild(fill);
+
+    const value = document.createElement("span");
+    value.className = "report-share__value";
+    value.textContent = `${formatNumber(percent, 1)} %`;
+
+    share.append(track, value);
+    return share;
+}
+
+function renderReport(data) {
+    const total = data.total;
+
+    setText("report-date", `Généré le ${new Date().toLocaleString("fr-BE", { dateStyle: "long", timeStyle: "short" })}`);
+    setText("report-total", formatNumber(total));
+    setText("report-interested", `${formatNumber(percentOf(data.interest.yes, total), 1)} %`);
+    setText("report-budget", data.budget.median === null ? "—" : `${formatNumber(data.budget.median, 2)} €`);
+    setText("report-contacts", `${formatNumber(percentOf(data.marketingContacts, total), 1)} %`);
+
+    const interestBody = fillReportTable("report-interest", [
+        ["Intéressé", formatNumber(data.interest.yes), createShareCell(data.interest.yes, total)],
+        ["À convaincre", formatNumber(data.interest.maybe), createShareCell(data.interest.maybe, total)],
+        ["Pas intéressé", formatNumber(data.interest.no), createShareCell(data.interest.no, total)],
+        ["Total", formatNumber(total), createShareCell(total, total)]
+    ]);
+    interestBody.lastElementChild.className = "report-table__total";
+
+    const transports = [
+        ["Voiture", data.transport.car],
+        ["Bus", data.transport.bus],
+        ["Train", data.transport.train],
+        ["Navette", data.transport.navette],
+        ["Vélo", data.transport.velo]
+    ].sort((a, b) => b[1] - a[1]);
+
+    fillReportTable("report-transport", transports.map(([label, count]) => [
+        label,
+        formatNumber(count),
+        createShareCell(count, total)
+    ]));
+
+    fillReportTable("report-profile", [
+        ["Âge (ans)", formatOptional(data.age.minimum, 1), formatOptional(data.age.median, 1), formatOptional(data.age.maximum, 1)],
+        ["Budget (€)", formatOptional(data.budget.minimum, 2), formatOptional(data.budget.median, 2), formatOptional(data.budget.maximum, 2)]
+    ]);
+
+    // L'API trie déjà par nombre de mentions.
+    const artists = (data.artists || []).slice(0, 10);
+    const artistRows = artists.length
+        ? artists.map((artist, index) => [String(index + 1), artist.name, formatNumber(artist.count)])
+        : [["—", "Aucun artiste renseigné", "—"]];
+
+    const artistsBody = fillReportTable("report-artists", artistRows);
+    for (const row of artistsBody.rows) {
+        row.cells[1].className = "report-table__left";
+    }
+}
+
+// Recharge les chiffres, remplit le rapport puis ouvre l'impression du navigateur
+// ("Enregistrer au format PDF"). Mise en page dans report.css.
+async function exportStatistics() {
+    exportButton.disabled = true;
+
+    const data = await loadDashboard();
+    exportButton.disabled = false;
+
+    // Pas d'export si les chiffres n'ont pas pu être actualisés.
+    if (!data) {
+        return;
+    }
+
+    renderReport(data);
+
+    // Le titre de la page sert de nom de fichier au PDF.
+    const pageTitle = document.title;
+    document.title = "Statistiques Orneau Festival";
+    window.addEventListener("afterprint", () => {
+        document.title = pageTitle;
+    }, { once: true });
+
+    window.print();
 }
 
 toggleArtistsButton.addEventListener("click", () => {
@@ -167,5 +290,6 @@ toggleArtistsButton.addEventListener("click", () => {
 
 artistSearch.addEventListener("input", renderArtists);
 refreshButton.addEventListener("click", loadDashboard);
+exportButton.addEventListener("click", exportStatistics);
 
 loadDashboard();

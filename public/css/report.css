@@ -1,0 +1,204 @@
+/* Rapport PDF : invisible à l'écran, seul élément imprimé (voir @media print). */
+
+.report {
+    display: none;
+    color: var(--text);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.report * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* ===== EN-TÊTE ===== */
+
+.report-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent);
+}
+
+.report-header__logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.report-header__title {
+    flex: 1;
+}
+
+.report-eyebrow {
+    margin: 0 0 3px;
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.report-header h1 {
+    margin: 0;
+    color: var(--accent-dark);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.report-header__date {
+    margin: 0;
+    font-size: 11px;
+    text-align: right;
+}
+
+/* ===== CHIFFRES CLÉS ===== */
+
+.report-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin: 12px 0 14px;
+}
+
+.report-kpi {
+    padding: 8px 12px;
+    border: 1px solid #dce5f2;
+    border-top: 3px solid var(--accent);
+    border-radius: 6px;
+}
+
+.report-kpi__value {
+    margin: 0 0 3px;
+    color: var(--accent-dark);
+    font-size: 21px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.report-kpi__label {
+    margin: 0;
+    font-size: 11px;
+}
+
+/* ===== TABLEAUX ===== */
+
+.report-section {
+    margin-bottom: 12px;
+}
+
+.report-section h2 {
+    margin: 0 0 5px;
+    color: var(--accent-dark);
+    font-size: 14px;
+    font-weight: 800;
+    break-after: avoid;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+}
+
+.report-table th,
+.report-table td {
+    padding: 3px 10px;
+    border-bottom: 1px solid #dce5f2;
+    text-align: right;
+}
+
+/* Un nom d'artiste trop long est coupé : il ne doit pas ajouter de ligne à la page */
+.report-table td.report-table__left {
+    width: 100%;
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.report-table th {
+    background: var(--accent);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.report-table th:first-child,
+.report-table td:first-child,
+.report-table .report-table__left {
+    text-align: left;
+}
+
+.report-table tbody tr:nth-child(even) {
+    background: #f6f8fd;
+}
+
+.report-table tr {
+    break-inside: avoid;
+}
+
+.report-table tbody tr.report-table__total {
+    background: #eaf1ff;
+    font-weight: 800;
+}
+
+/* Part affichée avec une petite barre dans la cellule */
+.report-share {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.report-share__track {
+    width: 90px;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 3px;
+    background: #e3eaf5;
+}
+
+.report-share__fill {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+}
+
+.report-share__value {
+    min-width: 50px;
+}
+
+.report-note {
+    margin: 6px 0 0;
+    font-size: 10px;
+}
+
+.report-footer {
+    margin: 0;
+    padding-top: 10px;
+    border-top: 1px solid #dce5f2;
+    font-size: 10px;
+}
+
+/* ===== IMPRESSION ===== */
+
+@media print {
+    @page {
+        size: A4;
+        margin: 12mm 14mm;
+    }
+
+    .dashboard,
+    .modal-overlay {
+        display: none !important;
+    }
+
+    .report {
+        display: block;
+    }
+}
