@@ -234,6 +234,69 @@ a:focus-visible {
     font-weight: 700;
 }
 
+/* ===== OBJECTIF DE RÉPONSES ===== */
+
+.goal-progress {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+    padding: 9px 16px;
+
+    border: 1px solid #dce5f2;
+    border-radius: 10px;
+
+    background: #ffffff;
+}
+
+/* Textes discrets : même couleur, même taille, même graisse */
+.goal-progress__label,
+.goal-progress__count,
+.goal-progress__percent {
+    flex-shrink: 0;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+.goal-progress__count {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin: 0;
+}
+
+.goal-progress__count strong {
+    font-weight: inherit;
+}
+
+.goal-progress__percent {
+    min-width: 34px;
+    text-align: right;
+}
+
+.goal-progress__track {
+    flex: 1;
+    min-width: 0;
+    height: 8px;
+    overflow: hidden;
+
+    border-radius: 20px;
+    background: #eaf0f9;
+}
+
+.goal-progress__fill {
+    display: block;
+    width: 0;
+    height: 100%;
+
+    border-radius: inherit;
+    background: var(--accent);
+
+    transition: width 1100ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 
 .stats-grid {
     display: grid;
@@ -969,6 +1032,23 @@ a:focus-visible {
     .section-heading__tag {
         padding: 7px 8px;
         font-size: 10px;
+    }
+
+    /* Objectif de réponses */
+
+    .goal-progress {
+        gap: 10px;
+        margin-bottom: 12px;
+        padding: 8px 12px;
+    }
+
+    /* Le libellé saute pour laisser la place à la barre */
+    .goal-progress__label {
+        display: none;
+    }
+
+    .goal-progress__track {
+        height: 7px;
     }
 
     /* Cartes statistiques */

@@ -63,9 +63,29 @@
                     <h2 id="interest-title">Intérêt pour le festival</h2>
                 </div>
 
-                <span class="section-heading__tag" id="response-count">
-                    Chargement...
-                </span>
+            </div>
+
+            <div class="goal-progress">
+                <span class="goal-progress__label">Objectif</span>
+
+                <p class="goal-progress__count">
+                    <strong id="goal-current">—</strong>
+                    <span>/ <span id="goal-target">—</span></span>
+                </p>
+
+                <div
+                        class="goal-progress__track"
+                        id="goal-bar"
+                        role="progressbar"
+                        aria-label="Progression vers l'objectif de réponses"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow="0"
+                >
+                    <span class="goal-progress__fill" id="goal-fill"></span>
+                </div>
+
+                <span class="goal-progress__percent" id="goal-percent">--%</span>
             </div>
 
             <div class="stats-grid">

@@ -17,6 +17,26 @@ function formatNumber(value, decimals = 0) {
     }).format(value);
 }
 
+// Objectif = centaine suivante : 133 → 200, 200 → 300, etc.
+function getResponseGoal(total) {
+    return (Math.floor(total / 100) + 1) * 100;
+}
+
+function renderGoal(total) {
+    const goal = getResponseGoal(total);
+    const percent = (total / goal) * 100;
+    const bar = document.getElementById("goal-bar");
+
+    setText("goal-current", formatNumber(total));
+    setText("goal-target", formatNumber(goal));
+    // Arrondi vers le bas : 299/300 ne doit pas afficher 100 %.
+    setText("goal-percent", `${Math.floor(percent)}%`);
+
+    bar.setAttribute("aria-valuemax", String(goal));
+    bar.setAttribute("aria-valuenow", String(total));
+    document.getElementById("goal-fill").style.width = `${percent}%`;
+}
+
 function renderArtists() {
     const query = artistSearch.value.trim().toLocaleLowerCase("fr");
     const filtered = artistsData.filter(artist =>
@@ -75,7 +95,7 @@ async function loadDashboard() {
         setText("yes-count", formatNumber(data.interest.yes));
         setText("maybe-count", formatNumber(data.interest.maybe));
         setText("no-count", formatNumber(data.interest.no));
-        setText("response-count", `${formatNumber(data.total)} réponse${data.total > 1 ? "s" : ""}`);
+        renderGoal(data.total);
         setText("min-age", data.age.minimum === null ? "—" : formatNumber(data.age.minimum, 1));
         setText("median-age", data.age.median === null ? "—" : formatNumber(data.age.median, 1));
         setText("max-age", data.age.maximum === null ? "—" : formatNumber(data.age.maximum, 1));
