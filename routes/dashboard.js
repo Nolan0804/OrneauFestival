@@ -52,7 +52,11 @@ router.get("/api/dashboard", requireRole("organisateur", "communication", "benev
 
                 COUNT(*) FILTER (
                     WHERE transport = 'navette'
-                )::int AS transport_navette
+                )::int AS transport_navette,
+
+                COUNT(*) FILTER (
+                    WHERE marketing_consent = TRUE AND email IS NOT NULL
+                )::int AS marketing_contacts
 
             FROM sondage;
         `;
@@ -103,6 +107,9 @@ router.get("/api/dashboard", requireRole("organisateur", "communication", "benev
                 maximum: stats.budget_maximum === null ? null : Number(stats.budget_maximum),
                 median: stats.median_budget === null ? null : Number(stats.median_budget)
             },
+
+            // Uniquement un total : les adresses e-mail ne quittent jamais la base ici.
+            marketingContacts: stats.marketing_contacts,
 
             artists: artistsResult.rows.map(artist => ({
                 id: artist.id,

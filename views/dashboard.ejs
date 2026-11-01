@@ -293,6 +293,34 @@
 
                 </article>
             </div>
+
+            <article class="contact-card">
+                <div class="contact-card__head">
+                    <div class="metric-card__icon" aria-hidden="true">✉</div>
+
+                    <div class="contact-card__summary">
+                        <p class="metric-card__label">Accord marketing et e-mail</p>
+                        <p class="metric-card__value">
+                            <span id="marketing-percent">—</span>
+                            <span class="metric-card__unit">%</span>
+                        </p>
+                    </div>
+
+                    <p class="contact-card__count" id="marketing-count">—</p>
+                </div>
+
+                <div
+                        class="goal-progress__track"
+                        id="marketing-bar"
+                        role="progressbar"
+                        aria-label="Part des répondants ayant donné leur accord marketing et leur e-mail"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow="0"
+                >
+                    <span class="goal-progress__fill" id="marketing-fill"></span>
+                </div>
+            </article>
         </section>
 
         <section class="dashboard-section artists-section"
@@ -300,7 +328,7 @@
 
             <div class="section-heading">
                 <div>
-                    <p class="section-heading__eyebrow">03 — Programmation</p>
+                    <p class="section-heading__eyebrow">04 — Programmation</p>
                     <h2 id="artists-title">Artistes souhaités</h2>
                     <p class="section-heading__description">
                         Les noms les plus cités par les participants.

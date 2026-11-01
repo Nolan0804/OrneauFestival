@@ -438,6 +438,48 @@ a:focus-visible {
     letter-spacing: 0;
 }
 
+/* ===== CONTACTS MARKETING ===== */
+
+.contact-card {
+    margin-top: 16px;
+    padding: 25px;
+
+    border: 1px solid #dce5f2;
+    border-radius: 13px;
+
+    background: #f9fbff;
+}
+
+.contact-card__head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.contact-card__head .metric-card__icon {
+    flex-shrink: 0;
+    margin-bottom: 0;
+}
+
+.contact-card__summary {
+    flex: 1;
+    min-width: 0;
+}
+
+.contact-card__summary .metric-card__label {
+    margin: 0 0 6px;
+}
+
+.contact-card__count {
+    flex-shrink: 0;
+    margin: 0;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+}
+
 /* ===== ARTISTES ===== */
 
 .artists-section {
@@ -673,11 +715,7 @@ a:focus-visible {
     height: 100%;
 
     border-radius: inherit;
-    background: linear-gradient(
-            90deg,
-            var(--accent),
-            #6a9cff
-    );
+    background: var(--accent);
 
     transition: width 300ms ease;
 }
@@ -1176,6 +1214,25 @@ a:focus-visible {
 
     .mobility-footer {
         font-size: 10px;
+    }
+
+    /* Contacts marketing */
+
+    .contact-card {
+        margin-top: 10px;
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    .contact-card__head {
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+
+    .contact-card__count {
+        width: 100%;
+        font-size: 11px;
     }
 
     /* Artistes */

@@ -17,6 +17,11 @@ function formatNumber(value, decimals = 0) {
     }).format(value);
 }
 
+// Sans réponse, le pourcentage vaut 0 plutôt que NaN ou Infinity.
+function percentOf(value, total) {
+    return total > 0 ? (value / total) * 100 : 0;
+}
+
 // Objectif = centaine suivante : 133 → 200, 200 → 300, etc.
 function getResponseGoal(total) {
     return (Math.floor(total / 100) + 1) * 100;
@@ -35,6 +40,27 @@ function renderGoal(total) {
     bar.setAttribute("aria-valuemax", String(goal));
     bar.setAttribute("aria-valuenow", String(total));
     document.getElementById("goal-fill").style.width = `${percent}%`;
+}
+
+function renderTransport(id, count, total) {
+    const percent = percentOf(count, total);
+
+    setText(`transport-${id}`, formatNumber(count));
+    setText(`transport-${id}-pourcentage`, percent.toFixed(0));
+    document.getElementById(`transport-${id}-bar`).style.width = `${percent}%`;
+}
+
+function renderMarketingContacts(contacts, total) {
+    const percent = percentOf(contacts, total);
+
+    setText("marketing-percent", formatNumber(percent, 1));
+    setText(
+        "marketing-count",
+        `${formatNumber(contacts)} contact${contacts > 1 ? "s" : ""} sur ${formatNumber(total)} réponse${total > 1 ? "s" : ""}`
+    );
+
+    document.getElementById("marketing-bar").setAttribute("aria-valuenow", percent.toFixed(1));
+    document.getElementById("marketing-fill").style.width = `${percent}%`;
 }
 
 function renderArtists() {
@@ -89,9 +115,9 @@ async function loadDashboard() {
         }
 
         const data = await response.json();
-        setText("procent_interested", "Intéressé - " + ((data.interest.yes / data.total) * 100).toFixed(2) + "%")
-        setText("procent_maybe", "A convaincre - " + ((data.interest.maybe / data.total) * 100).toFixed(2) + "%")
-        setText("procent_no", "Pas intéressé - " + ((data.interest.no / data.total) * 100).toFixed(2) + "%")
+        setText("procent_interested", "Intéressé - " + percentOf(data.interest.yes, data.total).toFixed(2) + "%")
+        setText("procent_maybe", "A convaincre - " + percentOf(data.interest.maybe, data.total).toFixed(2) + "%")
+        setText("procent_no", "Pas intéressé - " + percentOf(data.interest.no, data.total).toFixed(2) + "%")
         setText("yes-count", formatNumber(data.interest.yes));
         setText("maybe-count", formatNumber(data.interest.maybe));
         setText("no-count", formatNumber(data.interest.no));
@@ -100,21 +126,17 @@ async function loadDashboard() {
         setText("median-age", data.age.median === null ? "—" : formatNumber(data.age.median, 1));
         setText("max-age", data.age.maximum === null ? "—" : formatNumber(data.age.maximum, 1));
 
-        setText("transport-bus", data.transport.bus === null ? "—" : formatNumber(data.transport.bus));
-        setText("transport-voiture", data.transport.car === null ? "—" : formatNumber(data.transport.car));
-        setText("transport-train", data.transport.train === null ? "—" : formatNumber(data.transport.train));
-        setText("transport-navette", data.transport.navette === null ? "—" : formatNumber(data.transport.navette));
-        setText("transport-velo", data.transport.velo === null ? "—" : formatNumber(data.transport.velo));
-
-        setText("transport-bus-pourcentage", data.transport.bus === null ? "—" : (formatNumber(data.transport.bus) / data.total * 100).toFixed(0));
-        setText("transport-voiture-pourcentage", data.transport.car === null ? "—" : (formatNumber(data.transport.car) / data.total * 100).toFixed(0));
-        setText("transport-train-pourcentage", data.transport.train === null ? "—" : (formatNumber(data.transport.train) / data.total * 100).toFixed(0));
-        setText("transport-navette-pourcentage", data.transport.navette === null ? "—" : (formatNumber(data.transport.navette) / data.total * 100).toFixed(0));
-        setText("transport-velo-pourcentage", data.transport.velo === null ? "—" : (formatNumber(data.transport.velo) / data.total * 100).toFixed(0));
+        renderTransport("bus", data.transport.bus, data.total);
+        renderTransport("voiture", data.transport.car, data.total);
+        renderTransport("train", data.transport.train, data.total);
+        renderTransport("navette", data.transport.navette, data.total);
+        renderTransport("velo", data.transport.velo, data.total);
 
         setText("min-budget", data.budget.minimum === null ? "—" : formatNumber(data.budget.minimum, 2));
         setText("median-budget",data.budget.median === null ? "—" : formatNumber(data.budget.median, 2));
         setText("max-budget", data.budget.maximum === null ? "—" : formatNumber(data.budget.maximum, 2));
+
+        renderMarketingContacts(data.marketingContacts, data.total);
 
         artistsData = data.artists || [];
         setText("artists-total",`${artistsData.length} artiste${artistsData.length > 1 ? "s" : ""} distinct${artistsData.length > 1 ? "s" : ""}`);
