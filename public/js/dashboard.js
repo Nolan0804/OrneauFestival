@@ -64,6 +64,124 @@ function renderMarketingContacts(contacts, total) {
     document.getElementById("marketing-fill").style.width = `${percent}%`;
 }
 
+const timelineChart = document.getElementById("timeline-chart");
+const timelinePlot = document.getElementById("timeline-plot");
+const timelineTooltip = document.getElementById("timeline-tooltip");
+
+let timelineDays = [];
+let timelineTop = 1;
+let timelineActive = -1;
+
+// "AAAA-MM-JJ" lu comme une date locale : new Date(texte) le lirait en UTC.
+function parseDay(isoDate) {
+    const [year, month, day] = isoDate.split("-").map(Number);
+    return new Date(year, month - 1, day);
+}
+
+function formatDay(isoDate, options) {
+    return parseDay(isoDate).toLocaleDateString("fr-BE", options);
+}
+
+function formatResponses(count) {
+    return `${formatNumber(count)} réponse${count > 1 ? "s" : ""}`;
+}
+
+// Graduation lisible d'au plus 3 intervalles : 45 → pas de 20, jusqu'à 60.
+function getTimelineStep(max) {
+    const step = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000].find(value => value * 3 >= max);
+    return step ?? Math.ceil(max / 3);
+}
+
+function setTimelineActive(index) {
+    timelinePlot.children[timelineActive]?.classList.remove("is-active");
+    timelineActive = index;
+
+    if (index < 0) {
+        timelineTooltip.hidden = true;
+        return;
+    }
+
+    const day = timelineDays[index];
+    const column = timelinePlot.children[index];
+    column.classList.add("is-active");
+
+    setText("timeline-tooltip-value", formatResponses(day.count));
+    setText("timeline-tooltip-date", formatDay(day.date, { weekday: "long", day: "numeric", month: "long" }));
+    timelineTooltip.hidden = false;
+
+    // Centrée sur la colonne, sans déborder du graphique.
+    const center = timelinePlot.offsetLeft + column.offsetLeft + column.offsetWidth / 2;
+    const halfWidth = timelineTooltip.offsetWidth / 2;
+    const left = Math.min(Math.max(center, halfWidth), timelineChart.offsetWidth - halfWidth);
+    timelineTooltip.style.left = `${left}px`;
+    timelineTooltip.style.bottom = `calc(${(day.count / timelineTop) * 100}% + 8px)`;
+}
+
+function getTimelineIndexAt(clientX) {
+    const rect = timelinePlot.getBoundingClientRect();
+    const index = Math.floor(((clientX - rect.left) / rect.width) * timelineDays.length);
+    return Math.min(Math.max(index, 0), timelineDays.length - 1);
+}
+
+function renderTimeline(days) {
+    timelineDays = days;
+    timelineActive = -1;
+    timelineTooltip.hidden = true;
+
+    document.getElementById("timeline-content").hidden = days.length === 0;
+    document.getElementById("timeline-empty").hidden = days.length > 0;
+
+    if (days.length === 0) {
+        setText("timeline-summary", "");
+        return;
+    }
+
+    const peak = days.reduce((best, day) => (day.count > best.count ? day : best));
+    const lastWeek = days.slice(-7).reduce((sum, day) => sum + day.count, 0);
+    const step = getTimelineStep(peak.count);
+    timelineTop = Math.ceil(peak.count / step) * step;
+
+    setText(
+        "timeline-summary",
+        `Pic : ${formatResponses(peak.count)} le ${formatDay(peak.date, { day: "numeric", month: "long" })} · ${formatResponses(lastWeek)} sur les 7 derniers jours`
+    );
+
+    const ticks = [];
+    for (let value = 0; value <= timelineTop; value += step) {
+        const tick = document.createElement("span");
+        tick.className = "timeline__tick";
+        tick.style.bottom = `${(value / timelineTop) * 100}%`;
+        tick.dataset.value = String(value);
+        ticks.push(tick);
+    }
+    document.getElementById("timeline-ticks").replaceChildren(...ticks);
+
+    timelinePlot.style.gridTemplateColumns = `repeat(${days.length}, 1fr)`;
+    timelinePlot.replaceChildren(...days.map(day => {
+        const column = document.createElement("div");
+        column.className = "timeline__column";
+
+        const bar = document.createElement("span");
+        bar.className = "timeline__bar";
+        bar.style.height = `${(day.count / timelineTop) * 100}%`;
+
+        column.appendChild(bar);
+        return column;
+    }));
+
+    // Au plus 5 dates réparties, pour rester lisible sur mobile.
+    const labelCount = Math.min(days.length, 5);
+    const labels = new Set(Array.from({ length: labelCount }, (_, i) =>
+        labelCount === 1 ? 0 : Math.round((i * (days.length - 1)) / (labelCount - 1))
+    ));
+    document.getElementById("timeline-dates").replaceChildren(...[...labels].map(index => {
+        const label = document.createElement("span");
+        label.textContent = formatDay(days[index].date, { day: "numeric", month: "short" });
+        label.style.left = `${((index + 0.5) / days.length) * 100}%`;
+        return label;
+    }));
+}
+
 function renderArtists() {
     const query = artistSearch.value.trim().toLocaleLowerCase("fr");
     const filtered = artistsData.filter(artist =>
@@ -128,6 +246,7 @@ async function loadDashboard() {
         setText("maybe-count", formatNumber(data.interest.maybe));
         setText("no-count", formatNumber(data.interest.no));
         renderGoal(data.total);
+        renderTimeline(data.timeline || []);
         setText("min-age", data.age.minimum === null ? "—" : formatNumber(data.age.minimum, 1));
         setText("median-age", data.age.median === null ? "—" : formatNumber(data.age.median, 1));
         setText("max-age", data.age.maximum === null ? "—" : formatNumber(data.age.maximum, 1));
@@ -291,6 +410,42 @@ toggleArtistsButton.addEventListener("click", () => {
 
     toggleArtistsButton.firstChild.textContent =
         isExpanded ? "Voir la liste " : "Masquer la liste ";
+});
+
+// Un seul écouteur sur le graphique : le pointeur vise un jour, pas une barre fine.
+for (const eventName of ["pointermove", "pointerdown"]) {
+    timelinePlot.addEventListener(eventName, (event) => {
+        setTimelineActive(getTimelineIndexAt(event.clientX));
+    });
+}
+
+// Au doigt, "leave" arrive dès qu'on relève : l'infobulle reste affichée.
+timelinePlot.addEventListener("pointerleave", (event) => {
+    if (event.pointerType === "mouse") {
+        setTimelineActive(-1);
+    }
+});
+
+timelinePlot.addEventListener("focus", () => {
+    if (timelineActive < 0) {
+        setTimelineActive(timelineDays.length - 1);
+    }
+});
+timelinePlot.addEventListener("blur", () => setTimelineActive(-1));
+
+timelinePlot.addEventListener("keydown", (event) => {
+    const last = timelineDays.length - 1;
+    const targets = {
+        ArrowLeft: Math.max(timelineActive - 1, 0),
+        ArrowRight: Math.min(timelineActive + 1, last),
+        Home: 0,
+        End: last
+    };
+
+    if (event.key in targets) {
+        event.preventDefault();
+        setTimelineActive(targets[event.key]);
+    }
 });
 
 artistSearch.addEventListener("input", renderArtists);

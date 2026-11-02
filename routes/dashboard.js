@@ -68,8 +68,29 @@ router.get("/api/dashboard", requireRole("organisateur", "communication", "benev
             FROM sondage;
         `;
 
-        const [statsResult, artistsResult] = await Promise.all([
+        // Une ligne par jour, y compris les jours sans réponse, jusqu'à aujourd'hui.
+        const timelineSql = `
+            WITH bounds AS (
+                SELECT
+                    MIN((created_at AT TIME ZONE 'Europe/Brussels')::date) AS first_day,
+                    (NOW() AT TIME ZONE 'Europe/Brussels')::date AS last_day
+                FROM sondage
+            )
+            SELECT
+                to_char(d.day, 'YYYY-MM-DD') AS date,
+                COUNT(s.id)::int AS count
+            FROM bounds b
+            CROSS JOIN LATERAL generate_series(b.first_day, b.last_day, INTERVAL '1 day') AS d(day)
+            LEFT JOIN sondage s
+                ON (s.created_at AT TIME ZONE 'Europe/Brussels')::date = d.day
+            GROUP BY d.day
+            ORDER BY d.day;
+        `;
+
+        const [statsResult, timelineResult, artistsResult] = await Promise.all([
             pool.query(statsSql),
+
+            pool.query(timelineSql),
 
             pool.query(`
                 SELECT
@@ -115,6 +136,8 @@ router.get("/api/dashboard", requireRole("organisateur", "communication", "benev
                 median: stats.median_budget === null ? null : Number(stats.median_budget)
             },
             marketingContacts: stats.marketing_contacts,
+
+            timeline: timelineResult.rows,
 
             artists: artistsResult.rows.map(artist => ({
                 id: artist.id,

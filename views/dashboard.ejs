@@ -114,6 +114,27 @@
                     <p class="stat-card__description">Réponses négatives</p>
                 </article>
             </div>
+
+            <div class="timeline-panel">
+                <div class="timeline-panel__header">
+                    <h3 id="timeline-title">Réponses par jour</h3>
+                    <p class="timeline-panel__summary" id="timeline-summary"></p>
+                </div>
+
+                <div id="timeline-content" hidden>
+                    <div class="timeline__chart" id="timeline-chart">
+                        <div id="timeline-ticks" aria-hidden="true"></div>
+                        <div class="timeline__plot" id="timeline-plot" role="img" tabindex="0" aria-labelledby="timeline-title timeline-summary"></div>
+                        <div class="timeline__tooltip" id="timeline-tooltip" aria-live="polite" hidden>
+                            <strong id="timeline-tooltip-value"></strong>
+                            <span id="timeline-tooltip-date"></span>
+                        </div>
+                    </div>
+                    <div class="timeline__dates" id="timeline-dates" aria-hidden="true"></div>
+                </div>
+
+                <p class="empty-state" id="timeline-empty" hidden>Aucune réponse pour le moment.</p>
+            </div>
         </section>
 
 

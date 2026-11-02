@@ -3,7 +3,7 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 
-const SESSION_TIMEOUT_MS = 1 * 60 * 1000;
+const SESSION_TIMEOUT_MS = 15 * 60 * 1000;
 const app = express();
 
 app.locals.sessionTimeoutMs = SESSION_TIMEOUT_MS;
