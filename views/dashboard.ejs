@@ -10,10 +10,11 @@
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="/css/report.css">
+    <script src="/js/sessionTimeout.js" defer></script>
     <script src="/js/dashboard.js" defer></script>
 </head>
 
-<body>
+<body data-session-timeout="<%= sessionTimeoutMs %>">
 <main class="dashboard">
     <div class="dashboard__container">
 
@@ -384,7 +385,6 @@
     </div>
 </main>
 
-<%# Rapport PDF : invisible à l'écran, rempli par exportStatistics() dans dashboard.js %>
 <div class="report">
     <header class="report-header">
         <img src="/images/favicon.png" alt="" class="report-header__logo">

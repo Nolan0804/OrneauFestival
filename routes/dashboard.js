@@ -4,10 +4,17 @@ const pool = require("../database");
 const requireRole = require("../middleware/requireRole");
 
 router.get("/dashboard", requireRole("organisateur", "communication", "benevole", "collaborateur"), (req, res) => {
+    // Sans cela, le bouton Retour réaffiche les données après la déconnexion.
+    res.set("Cache-Control", "no-store");
+
     return res.render("dashboard", {
         role: req.session.userRole,
         name: req.session.userName
     });
+});
+
+router.post("/api/session/ping", requireRole("all"), (req, res) => {
+    return res.sendStatus(204);
 });
 
 router.get("/api/dashboard", requireRole("organisateur", "communication", "benevole", "collaborateur"), async (req, res) => {
@@ -107,8 +114,6 @@ router.get("/api/dashboard", requireRole("organisateur", "communication", "benev
                 maximum: stats.budget_maximum === null ? null : Number(stats.budget_maximum),
                 median: stats.median_budget === null ? null : Number(stats.median_budget)
             },
-
-            // Uniquement un total : les adresses e-mail ne quittent jamais la base ici.
             marketingContacts: stats.marketing_contacts,
 
             artists: artistsResult.rows.map(artist => ({

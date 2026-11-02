@@ -111,6 +111,11 @@ async function loadDashboard() {
             cache: "no-store"
         });
 
+        if (response.status === 401) {
+            redirectToLogin();
+            return null;
+        }
+
         if (!response.ok) {
             throw new Error(`Erreur HTTP ${response.status}`);
         }

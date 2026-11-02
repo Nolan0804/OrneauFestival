@@ -3,7 +3,10 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 
+const SESSION_TIMEOUT_MS = 1 * 60 * 1000;
 const app = express();
+
+app.locals.sessionTimeoutMs = SESSION_TIMEOUT_MS;
 
 const pageRoutes = require("./routes/pages");
 const adminRoutes = require("./routes/admin");
@@ -20,11 +23,12 @@ app.use(
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
+        rolling: true,
         cookie: {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 15 * 60 * 1000
+            maxAge: SESSION_TIMEOUT_MS
         }
     })
 );

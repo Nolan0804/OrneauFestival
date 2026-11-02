@@ -17,7 +17,9 @@ router.get("/admin/login", (req, res) => {
         return res.redirect("/dashboard");
     }
 
-    return res.render("login", { error: null });
+    return res.render("login", {
+        error: req.query.expired ? "Votre session a expiré. Veuillez vous reconnecter." : null
+    });
 });
 
 router.post("/admin/login", loginLimiter, async (req, res) => {
