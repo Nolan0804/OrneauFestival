@@ -137,14 +137,8 @@ function renderTimeline(days) {
     }
 
     const peak = days.reduce((best, day) => (day.count > best.count ? day : best));
-    const lastWeek = days.slice(-7).reduce((sum, day) => sum + day.count, 0);
     const step = getTimelineStep(peak.count);
     timelineTop = Math.ceil(peak.count / step) * step;
-
-    setText(
-        "timeline-summary",
-        `Pic : ${formatResponses(peak.count)} le ${formatDay(peak.date, { day: "numeric", month: "long" })} · ${formatResponses(lastWeek)} sur les 7 derniers jours`
-    );
 
     const ticks = [];
     for (let value = 0; value <= timelineTop; value += step) {
